@@ -1,0 +1,89 @@
+//
+//  PrefixHeader.pch
+//  Actions
+//
+//  Created by Lukas Bischof on 16.05.16.
+//  Copyright © 2016 Lukas. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#ifndef SWF
+ #define SWF(string, ...) [NSString stringWithFormat:string, ##__VA_ARGS__]
+#endif
+
+#define DYNAMIC_PROPERTY strong, nonatomic, readonly, nonnull
+#define NO_RETURN __attribute__((noreturn))
+
+#ifndef ILog
+
+/**
+ @define ILog
+ @brief Information Log: Log's general information to stdout
+*/
+ #define ILog(message, ...) NSLog(@"(i) [%@, %@]: %@", [self className], NSStringFromSelector(_cmd), SWF(message, ##__VA_ARGS__))
+#endif
+
+
+
+#ifndef DLog
+ #ifdef DEBUG
+  /**
+   @define DLog
+   @brief Debug Log: Log's debug information to stdout
+  */
+  #define DLog(message, ...) NSLog(@"(d) [%@, %@]: %@", [self className], NSStringFromSelector(_cmd), SWF(message, ##__VA_ARGS__))
+ #else
+  #define DLog(message, ...)
+ #endif
+#endif
+
+
+#define NSTOCSTR(str) [(str) cStringUsingEncoding:NSUTF8StringEncoding]
+
+
+#ifndef WLog
+
+/**
+ @define WLog
+ @brief Warning Log: Log's a warning to stderr
+*/
+ #define WLog(message, ...) (void)fprintf(stderr, "(WARNING) [%s, %s]: %s\n", NSTOCSTR([self className]), __PRETTY_FUNCTION__, NSTOCSTR(SWF(message, ##__VA_ARGS__)))
+#endif
+
+
+#ifndef ELog
+
+/**
+ @define ELog
+ @brief Error Log: Log's an error to stderr
+ */
+ #define ELog(message, ...) (void)fprintf(stderr, "---> (ERROR) [%s, %s]: %s\n", NSTOCSTR([self className]), __PRETTY_FUNCTION__, NSTOCSTR(SWF(message, ##__VA_ARGS__)))
+#endif
+
+
+#ifndef EAbrtLog
+ #ifdef DEBUG
+ /**
+  @define EAbrtLog
+  @brief EAbrtLog Log: Log's an error to stderr if in debug mode. If not it aborts
+ */
+  #define EAbrtLog(message, ...) (void)fprintf(stderr, "---> (ERROR) [%s, %s]: %s\n", NSTOCSTR([self className]), __PRETTY_FUNCTION__, NSTOCSTR(SWF(message, ##__VA_ARGS__)))
+ #else
+  #define EAbrtLog(message, ...) NSAssert(FALSE, message, ##__VA_ARGS__)
+ #endif
+#endif
+
+#ifndef DEBUG_ONLY
+ #ifdef DEBUG
+  #define DEBUG_ONLY(args) args
+ #else
+  #define DEBUG_ONLY(args)
+ #endif
+#endif
+
+#endif /* PrefixHeader_pch */

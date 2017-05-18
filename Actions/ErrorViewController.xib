@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ErrorViewController" customModule="Actions" customModuleProvider="target">
+            <connections>
+                <outlet property="additionalButton" destination="eEO-MH-34y" id="cnQ-Ar-035"/>
+                <outlet property="errorDescriptionTextField" destination="IiK-vm-H0s" id="wZ3-li-0Ci"/>
+                <outlet property="errorTitleTextField" destination="1ay-4M-Jry" id="rIc-Zo-2mY"/>
+                <outlet property="imageView" destination="5rp-mF-nVI" id="Miz-U2-Wjt"/>
+                <outlet property="view" destination="2nd-0u-1Hg" id="PjQ-b6-3rb"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="2nd-0u-1Hg">
+            <rect key="frame" x="0.0" y="0.0" width="405" height="149"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="68F-IM-jWF">
+                    <rect key="frame" x="95" y="8" width="290" height="133"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1ay-4M-Jry">
+                            <rect key="frame" x="6" y="91" width="278" height="22"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Error Title" id="h5Q-mX-Tiw">
+                                <font key="font" metaFont="systemBold" size="18"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IiK-vm-H0s">
+                            <rect key="frame" x="6" y="49" width="278" height="34"/>
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="This is the description of the error or the localized user info key" id="fov-Ux-aDa">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WoH-Y5-Lgv">
+                            <rect key="frame" x="207" y="6" width="81" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="69" id="QgE-Jk-umn"/>
+                            </constraints>
+                            <buttonCell key="cell" type="push" title="Ok" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="FeN-Sr-SA9">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                                <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                            </buttonCell>
+                            <connections>
+                                <action selector="okButtonPressed:" target="-2" id="qbT-lw-qqo"/>
+                            </connections>
+                        </button>
+                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eEO-MH-34y">
+                            <rect key="frame" x="107" y="6" width="100" height="32"/>
+                            <buttonCell key="cell" type="push" title="additional" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Uyn-1P-i88">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="additionalButtonPressed:" target="-2" id="lcP-VD-bZm"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="290" id="1sG-eT-4Gy"/>
+                        <constraint firstItem="WoH-Y5-Lgv" firstAttribute="baseline" secondItem="eEO-MH-34y" secondAttribute="baseline" id="Cv6-NP-pfs"/>
+                        <constraint firstAttribute="trailing" secondItem="WoH-Y5-Lgv" secondAttribute="trailing" constant="8" id="GQa-U0-RRL"/>
+                        <constraint firstItem="WoH-Y5-Lgv" firstAttribute="leading" secondItem="eEO-MH-34y" secondAttribute="trailing" constant="12" id="J5d-ii-bHo"/>
+                        <constraint firstItem="IiK-vm-H0s" firstAttribute="top" secondItem="1ay-4M-Jry" secondAttribute="bottom" constant="8" id="OBa-MH-D93"/>
+                        <constraint firstAttribute="trailing" secondItem="1ay-4M-Jry" secondAttribute="trailing" constant="8" id="Ovb-t2-A3s"/>
+                        <constraint firstItem="1ay-4M-Jry" firstAttribute="leading" secondItem="68F-IM-jWF" secondAttribute="leading" constant="8" id="Q76-s3-8Nv"/>
+                        <constraint firstItem="1ay-4M-Jry" firstAttribute="top" secondItem="68F-IM-jWF" secondAttribute="top" constant="20" id="Tjl-e4-2jg"/>
+                        <constraint firstItem="IiK-vm-H0s" firstAttribute="leading" secondItem="68F-IM-jWF" secondAttribute="leading" constant="8" id="UBv-uV-Agf"/>
+                        <constraint firstAttribute="bottom" secondItem="WoH-Y5-Lgv" secondAttribute="bottom" constant="13" id="aZY-Cx-MCE"/>
+                        <constraint firstAttribute="trailing" secondItem="IiK-vm-H0s" secondAttribute="trailing" constant="8" id="jsI-jL-cEk"/>
+                        <constraint firstItem="WoH-Y5-Lgv" firstAttribute="top" secondItem="IiK-vm-H0s" secondAttribute="bottom" constant="15" id="uis-IN-nXM"/>
+                    </constraints>
+                </customView>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5rp-mF-nVI">
+                    <rect key="frame" x="20" y="47" width="55" height="55"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="55" id="Bxc-7W-xlp"/>
+                        <constraint firstAttribute="height" constant="55" id="fbT-89-Qfg"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="NSCaution" id="OKI-7a-kGE"/>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="68F-IM-jWF" firstAttribute="top" secondItem="2nd-0u-1Hg" secondAttribute="top" constant="8" id="3Jg-wd-7H4"/>
+                <constraint firstItem="68F-IM-jWF" firstAttribute="leading" secondItem="5rp-mF-nVI" secondAttribute="trailing" constant="20" id="9UL-5O-MdX"/>
+                <constraint firstItem="5rp-mF-nVI" firstAttribute="leading" secondItem="2nd-0u-1Hg" secondAttribute="leading" constant="20" id="W7L-aE-EDx"/>
+                <constraint firstAttribute="bottom" secondItem="68F-IM-jWF" secondAttribute="bottom" constant="8" id="Zf9-Nq-dbk"/>
+                <constraint firstItem="68F-IM-jWF" firstAttribute="centerY" secondItem="5rp-mF-nVI" secondAttribute="centerY" id="sFS-ZE-tkN"/>
+                <constraint firstAttribute="trailing" secondItem="68F-IM-jWF" secondAttribute="trailing" constant="20" id="weP-Yo-I8r"/>
+            </constraints>
+            <point key="canvasLocation" x="439.5" y="257.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSCaution" width="32" height="32"/>
+    </resources>
+</document>
