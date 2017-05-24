@@ -57,7 +57,7 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
             _type = ExecutableFileTypeAppleScript;
         } else if ([extension isEqualToString:@"workflow"]) {
             _type = ExecutableFileTypeAutomatorWorkflow;
-        } else if ([extension isEqualToString:@"actn"] && ![SettingsKVStore sharedStore].appIsSandboxed) {
+        } else if ([extension isEqualToString:@"bundle"] && ![SettingsKVStore sharedStore].appIsSandboxed) {
             _type = ExecutableFileTypeActionBundle;
         } else {
             return nil;
@@ -92,6 +92,8 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
 
 - (NSError *_Nullable)executeAppleScript
 {
+    /*
+     // Attempt with sandboxing. Doesn't work yet.
     NSError *error;
     NSURL *url = [NSURL fileURLWithPath:@"/Users/Lukas/Library/Application Scripts/de.pf-control.aseider.Actions/sandbox2.scpt"]; //[[NSFileManager defaultManager] URLForDirectory:NSApplicationScriptsDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:&error];
     if (error)
@@ -121,9 +123,9 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
         NSLog(@"result: %@, error: %@", result, error);
     }];
     
-    return nil;
+    return nil;*/
     
-    /*NSDictionary *errors;
+    NSDictionary *errors;
     NSAppleScript *appleScript = [[NSAppleScript alloc] initWithContentsOfURL:_url
                                                                         error:&errors];
     if (errors && errors.count > 0) {
@@ -143,7 +145,7 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
         return error;
     }
     
-    return nil;*/
+    return nil;
 }
 
 - (NSError *_Nullable)executeAutomatorWorkflow
