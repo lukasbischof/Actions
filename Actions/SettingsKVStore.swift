@@ -16,12 +16,12 @@
  
  
  Der SettingsKVStore repräsentiert alle Optionen, welche man in dem Settings-Panel setzen kann. 
- Jedigliche Optionen werden in der Haup-Klasse “SettingsKVStore“ gespeichert. Sie sind über Properties verfügbar.
- Um das laden zu automatisieren wird die sharedStore Property bereitgestellt. 
+ Jedigliche Optionen werden in der Haupt-Klasse “SettingsKVStore“ gespeichert. Sie sind über Properties verfügbar.
+ Um das Laden zu automatisieren wird die sharedStore Property bereitgestellt.
  Die einzelnen Properties werden automatisch direkt nach dem Editieren über einen Setter gespeichert. 
  
  Die networkSettings-Property ist jedoch ein wenig anders als alle andere Properties:
- Sie ist eine Instanz der “NetworkingSettings“-Klasse welche im Prinzip nur die TableView des Networking-Tabs in den Einstellunges repräsentiert. 
+ Sie ist eine Instanz der “NetworkingSettings“-Klasse, welche im Prinzip nur die TableView des Networking-Tabs in den Einstellunges repräsentiert. 
  Deshalb besitzt diese Klasse als Haupt-Funktion nur ein Array, welches NetworkOptions beinhaltet. Eine NetworkOption setzt sich aus folgenden Attributen zusammen:
     • enabled, boolean: Eine Flag, welche anzeigt, ob die Option aktiviert ist oder nicht.
     • displayName, String: Der Titel welche in dem TableView als Beschreibung zur Option angezeigt wird. Hat keinen Einfluss auf die Programmierung
