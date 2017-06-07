@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="tlg-Ry-bbx">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="tlg-Ry-bbx">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Window Controller-->
@@ -142,16 +143,29 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="SbA-Im-f5M"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="check" title="Show CPU Usage" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="W8h-D6-vp8">
+                                        <buttonCell key="cell" type="check" title="Show general CPU Information" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="W8h-D6-vp8">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
-                                            <action selector="showCPUUsageCheckboxButtonPressed:" target="8Pl-2M-sUX" id="dyq-5v-qhh"/>
+                                            <action selector="showCPUInfoCheckboxButtonPressed:" target="8Pl-2M-sUX" id="XVV-Th-5X6"/>
+                                        </connections>
+                                    </button>
+                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="HWV-Nm-YPv">
+                                        <rect key="frame" x="26" y="134" width="260" height="24"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="20" id="din-RI-14p"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="check" title="Show CPU Usage" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tKK-oW-o2M">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="showCPUUsageCheckboxButtonPressed:" target="8Pl-2M-sUX" id="kFJ-oE-7je"/>
                                         </connections>
                                     </button>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="2BW-OZ-FRA">
-                                        <rect key="frame" x="26" y="134" width="260" height="24"/>
+                                        <rect key="frame" x="26" y="106" width="260" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="P5h-rE-sZZ"/>
                                         </constraints>
@@ -164,7 +178,7 @@
                                         </connections>
                                     </button>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="QTC-dz-fVj">
-                                        <rect key="frame" x="26" y="106" width="260" height="24"/>
+                                        <rect key="frame" x="26" y="78" width="260" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="d1Z-FZ-gS0"/>
                                         </constraints>
@@ -177,7 +191,7 @@
                                         </connections>
                                     </button>
                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="Zl2-b4-Bin">
-                                        <rect key="frame" x="26" y="78" width="260" height="24"/>
+                                        <rect key="frame" x="26" y="50" width="260" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="b8N-23-WHY"/>
                                         </constraints>
@@ -193,6 +207,7 @@
                                 <constraints>
                                     <constraint firstItem="k9g-oX-l2h" firstAttribute="leading" secondItem="JdR-4g-1LY" secondAttribute="leading" constant="28" id="0g5-lj-WzR"/>
                                     <constraint firstItem="k9g-oX-l2h" firstAttribute="top" secondItem="sPb-k8-Iv9" secondAttribute="bottom" constant="8" id="8LA-en-lNb"/>
+                                    <constraint firstItem="HWV-Nm-YPv" firstAttribute="top" secondItem="k9g-oX-l2h" secondAttribute="bottom" constant="8" id="8Mp-Ky-Goa"/>
                                     <constraint firstItem="x2i-bk-bdf" firstAttribute="leading" secondItem="JdR-4g-1LY" secondAttribute="leading" constant="8" id="AuO-wG-DSZ"/>
                                     <constraint firstItem="x2i-bk-bdf" firstAttribute="top" secondItem="JdR-4g-1LY" secondAttribute="top" constant="8" id="CAJ-y0-dW3"/>
                                     <constraint firstAttribute="trailing" secondItem="x2i-bk-bdf" secondAttribute="trailing" constant="8" id="Gj3-55-iH7"/>
@@ -204,14 +219,16 @@
                                     <constraint firstItem="0RG-qE-p3y" firstAttribute="leading" secondItem="JdR-4g-1LY" secondAttribute="leading" constant="8" id="Xc5-YE-qbU"/>
                                     <constraint firstAttribute="trailing" secondItem="Zl2-b4-Bin" secondAttribute="trailing" constant="8" id="Yzm-eK-Cx4"/>
                                     <constraint firstItem="2BW-OZ-FRA" firstAttribute="leading" secondItem="JdR-4g-1LY" secondAttribute="leading" constant="28" id="ZId-oi-738"/>
+                                    <constraint firstItem="HWV-Nm-YPv" firstAttribute="leading" secondItem="JdR-4g-1LY" secondAttribute="leading" constant="28" id="fbn-p1-nXU"/>
                                     <constraint firstItem="sPb-k8-Iv9" firstAttribute="top" secondItem="0RG-qE-p3y" secondAttribute="bottom" constant="8" id="fdH-6Q-CwR"/>
                                     <constraint firstAttribute="trailing" secondItem="0RG-qE-p3y" secondAttribute="trailing" constant="8" id="gd5-zU-Kie"/>
                                     <constraint firstItem="Zl2-b4-Bin" firstAttribute="leading" secondItem="JdR-4g-1LY" secondAttribute="leading" constant="28" id="gpd-KV-m0w"/>
                                     <constraint firstItem="QTC-dz-fVj" firstAttribute="top" secondItem="2BW-OZ-FRA" secondAttribute="bottom" constant="8" id="iJz-th-liB"/>
                                     <constraint firstItem="Zl2-b4-Bin" firstAttribute="top" secondItem="QTC-dz-fVj" secondAttribute="bottom" constant="8" id="izW-v7-Kma"/>
-                                    <constraint firstItem="2BW-OZ-FRA" firstAttribute="top" secondItem="k9g-oX-l2h" secondAttribute="bottom" constant="8" id="jdP-Dx-vPA"/>
                                     <constraint firstItem="QTC-dz-fVj" firstAttribute="leading" secondItem="JdR-4g-1LY" secondAttribute="leading" constant="28" id="l0x-Rs-Dz4"/>
                                     <constraint firstAttribute="trailing" secondItem="k9g-oX-l2h" secondAttribute="trailing" constant="8" id="neB-aY-mMc"/>
+                                    <constraint firstItem="2BW-OZ-FRA" firstAttribute="top" secondItem="HWV-Nm-YPv" secondAttribute="bottom" constant="8" id="pmP-cm-0ee"/>
+                                    <constraint firstAttribute="trailing" secondItem="HWV-Nm-YPv" secondAttribute="trailing" constant="8" id="rwi-aT-RtN"/>
                                     <constraint firstAttribute="trailing" secondItem="2BW-OZ-FRA" secondAttribute="trailing" constant="8" id="uDA-VP-5Ay"/>
                                 </constraints>
                             </customView>
@@ -228,8 +245,9 @@
                     </view>
                     <connections>
                         <outlet property="enumeratedKeyboardShortcutsCheckboxButton" destination="x2i-bk-bdf" id="gMZ-WJ-8pZ"/>
+                        <outlet property="showCPUInfoCheckboxButton" destination="k9g-oX-l2h" id="pAR-9g-80B"/>
                         <outlet property="showCPUTemperatureCheckboxButton" destination="sPb-k8-Iv9" id="OPE-iv-3ZG"/>
-                        <outlet property="showCPUUsageCheckboxButton" destination="k9g-oX-l2h" id="IWT-WA-r4k"/>
+                        <outlet property="showCPUUsageCheckboxButton" destination="HWV-Nm-YPv" id="CO9-Yr-bLr"/>
                         <outlet property="showFansCheckboxButton" destination="2BW-OZ-FRA" id="Qio-ZX-udr"/>
                         <outlet property="showNetworkInformationCheckboxButton" destination="Zl2-b4-Bin" id="rzO-ZN-xQX"/>
                         <outlet property="showSystemWatchdogCheckboxButton" destination="0RG-qE-p3y" id="fEe-YV-1dp"/>
@@ -257,7 +275,7 @@
                                             <constraint firstAttribute="height" constant="24" id="M0r-Aq-5kC"/>
                                         </constraints>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Scripts directory: " id="M3l-MS-wFM">
-                                            <font key="font" size="13" name="SFUIText-Regular"/>
+                                            <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -585,6 +603,7 @@
                                                             <subviews>
                                                                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VBz-wL-KXU">
                                                                     <rect key="frame" x="0.0" y="0.0" width="108" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell 2" id="3pb-jW-NLq">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

@@ -13,6 +13,7 @@ class AppearanceViewController: NSViewController {
     @IBOutlet weak var enumeratedKeyboardShortcutsCheckboxButton: NSButton!
     @IBOutlet weak var showSystemWatchdogCheckboxButton: NSButton!
     @IBOutlet weak var showCPUTemperatureCheckboxButton: NSButton!
+    @IBOutlet weak var showCPUInfoCheckboxButton: NSButton!
     @IBOutlet weak var showCPUUsageCheckboxButton: NSButton!
     @IBOutlet weak var showFansCheckboxButton: NSButton!
     @IBOutlet weak var showTotalDCINCheckboxButton: NSButton!
@@ -42,6 +43,7 @@ class AppearanceViewController: NSViewController {
         enumeratedKeyboardShortcutsCheckboxButton.state = SettingsKVStore.sharedStore.enumeratedKeyboardShortcutsEnabled ? NSOnState : NSOffState
         showSystemWatchdogCheckboxButton.state = SettingsKVStore.sharedStore.systemWatchdogEnabled ? NSOnState : NSOffState
         showCPUTemperatureCheckboxButton.state = SettingsKVStore.sharedStore.showCPUTemperatureEnabled ? NSOnState : NSOffState
+        showCPUInfoCheckboxButton.state = SettingsKVStore.sharedStore.showCPUInfo ? NSOnState : NSOffState
         showCPUUsageCheckboxButton.state = SettingsKVStore.sharedStore.showCPUUsageEnabled ? NSOnState : NSOffState
         showFansCheckboxButton.state = SettingsKVStore.sharedStore.showFansEnabled ? NSOnState : NSOffState
         showTotalDCINCheckboxButton.state = SettingsKVStore.sharedStore.showLineInPowerEnabled ? NSOnState : NSOffState
@@ -64,6 +66,10 @@ class AppearanceViewController: NSViewController {
     
     @IBAction func showCPUTemperatureCheckboxButtonPressed(_ sender: AnyObject) {
         SettingsKVStore.sharedStore.showCPUTemperatureEnabled = sender.state == NSOnState
+    }
+    
+    @IBAction func showCPUInfoCheckboxButtonPressed(_ sender: AnyObject) {
+        SettingsKVStore.sharedStore.showCPUInfo = sender.state == NSOnState
     }
     
     @IBAction func showCPUUsageCheckboxButtonPressed(_ sender: NSButton) {

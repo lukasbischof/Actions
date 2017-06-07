@@ -17,7 +17,7 @@
  
  Der SettingsKVStore repräsentiert alle Optionen, welche man in dem Settings-Panel setzen kann. 
  Jedigliche Optionen werden in der Haupt-Klasse “SettingsKVStore“ gespeichert. Sie sind über Properties verfügbar.
- Um das Laden zu automatisieren wird die sharedStore Property bereitgestellt.
+ Um das Laden zu automatisieren, wird die sharedStore Property bereitgestellt.
  Die einzelnen Properties werden automatisch direkt nach dem Editieren über einen Setter gespeichert. 
  
  Die networkSettings-Property ist jedoch ein wenig anders als alle andere Properties:
@@ -70,6 +70,7 @@ class Constants: NSObject {
     static let kEnumeratedKeyboardShortcutsEnabledKey: NSString = NSString(string: "kEnumeratedKeyboardShortcutsEnabled")
     static let kSystemWatchdogEnabledKey: NSString = NSString(string: "kSystemWatchdogEnabled")
     static let kShowCPUTemperatureEnabledKey: NSString = NSString(string: "kShowCPUTemperatureEnabled")
+    static let kShowCPUInfo: NSString = NSString(string: "kShowCPUInfo")
     static let kShowCPUUsageEnabledKey: NSString = NSString(string: "kShowCPUUsageEnabled")
     static let kShowFansEnabledKey: NSString = NSString(string: "kShowFansEnabled")
     static let kShowLineInPowerEnabledKey: NSString = NSString(string: "kShowPowerEnabled")
@@ -359,6 +360,15 @@ internal class SettingsKVStore: NSObject {
         }
     }
     
+    internal var showCPUInfo: Bool = true {
+        didSet(oldValue) {
+            if showCPUInfo != oldValue {
+                setBool(showCPUInfo, forKey: Constants.kShowCPUInfo as String)
+                sync()
+            }
+        }
+    }
+    
     internal var showCPUUsageEnabled: Bool = true {
         didSet(oldValue) {
             if showCPUUsageEnabled != oldValue {
@@ -508,6 +518,7 @@ internal class SettingsKVStore: NSObject {
         self.enumeratedKeyboardShortcutsEnabled = getBool(Constants.kEnumeratedKeyboardShortcutsEnabledKey as String, defaultValue: false)
         self.systemWatchdogEnabled = getBool(Constants.kSystemWatchdogEnabledKey as String, defaultValue: true)
         self.showCPUTemperatureEnabled = getBool(Constants.kShowCPUTemperatureEnabledKey as String, defaultValue: true)
+        self.showCPUInfo = getBool(Constants.kShowCPUInfo as String, defaultValue: true)
         self.showCPUUsageEnabled = getBool(Constants.kShowCPUUsageEnabledKey as String, defaultValue: true)
         self.showFansEnabled = getBool(Constants.kShowFansEnabledKey as String, defaultValue: false)
         self.showLineInPowerEnabled = getBool(Constants.kShowLineInPowerEnabledKey as String, defaultValue: true)

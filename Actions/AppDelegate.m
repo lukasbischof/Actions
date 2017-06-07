@@ -11,6 +11,7 @@
 #import "NSArray+Reverse.h"
 #import "NSURL+sandboxing.h"
 #import "CPUUsageWatcher.h"
+#import "CPUStaticInformation.h"
 #import "SMCWrapper.h"
 #import "NTWRKInfo.h"
 #import "Actions-Swift.h"
@@ -64,6 +65,7 @@ typedef void(^_Nullable errorViewControllerCompletionHandler)(enum ErrorViewCont
 @property (strong, nonatomic) CPUUsageWatcher *cpuUsageWatcher;
 @property (strong, nonatomic) SMCWrapper *smcWrapper;
 @property (strong, nonatomic) NTWRKInfo *networkInformation;
+@property (strong, nonatomic) CPUStaticInformation *cpuInformation;
 
 @property (strong, nonatomic) NSMenuItem *bonjourMenuItem;
 @property (readonly, nonatomic) BOOL shouldShowBonjourSection;
@@ -92,6 +94,9 @@ typedef void(^_Nullable errorViewControllerCompletionHandler)(enum ErrorViewCont
     // Setup CPUUsageWatcher
     self.cpuUsageWatcher = [[CPUUsageWatcher alloc] initWithUpdateInterval:SYSTEM_WATCHDOG_UPDATE_INTERVAL];
     self.cpuUsageWatcher.delegate = self;
+    
+    // Setup CPUInformation
+    self.cpuInformation = [CPUStaticInformation sharedInfo];
     
     // Setup Network Information
     self.networkInformation = [NTWRKInfo new];
@@ -336,7 +341,8 @@ typedef void(^_Nullable errorViewControllerCompletionHandler)(enum ErrorViewCont
     
     BOOL isSandboxed = [SettingsKVStore sharedStore].appIsSandboxed;
     BOOL showCPUTitleItem = ([SettingsKVStore sharedStore].showCPUTemperatureEnabled && !isSandboxed) ||
-                            [SettingsKVStore sharedStore].showCPUUsageEnabled;
+                            [SettingsKVStore sharedStore].showCPUUsageEnabled ||
+                            [SettingsKVStore sharedStore].showCPUInfo;
     BOOL showFansSegment = [SettingsKVStore sharedStore].showFansEnabled && !isSandboxed;
     BOOL showPowerSegment = [SettingsKVStore sharedStore].showLineInPowerEnabled && !isSandboxed;
     BOOL showNetworkingSegment = [SettingsKVStore sharedStore].showNetworkInformationEnabled;
@@ -364,11 +370,24 @@ typedef void(^_Nullable errorViewControllerCompletionHandler)(enum ErrorViewCont
         [*menu addItem:cpuTempItem];
     }
     
+    // *** CPU INFO ***
+    if ([SettingsKVStore sharedStore].showCPUInfo) {
+        NSMenuItem *frequency = [[NSMenuItem alloc] initWithTitle:SWF(@"Frequency: %.2f GHz", self.cpuInformation.frequency) action:nil keyEquivalent:@""];
+        frequency.enabled = NO;
+        
+        [*menu addItem:frequency];
+        
+        NSMenuItem *brand = [[NSMenuItem alloc] initWithTitle:SWF(@"Brand: %@", self.cpuInformation.brand) action:nil keyEquivalent:@""];
+        frequency.enabled = NO;
+        
+        [*menu addItem:brand];
+    }
+    
     
     // *** CPU ACTIVITY ***
     if ([SettingsKVStore sharedStore].showCPUUsageEnabled) {
         for (NSUInteger i = 0; i < self.cpuUsageWatcher.numberOfKerns; i++) {
-            NSMenuItem *cpuActivityItem = [[NSMenuItem alloc] initWithTitle:SWF(@"CPU Core %lu Activity: 0%%", (unsigned long)i + 1) action:nil keyEquivalent:@""];
+            NSMenuItem *cpuActivityItem = [[NSMenuItem alloc] initWithTitle:SWF(@"Core %lu Activity: 0%%", (unsigned long)i + 1) action:nil keyEquivalent:@""];
             cpuActivityItem.enabled = NO;
             cpuActivityItem.tag = kCPUActivityBaseCoreMenuItemTag + i;
             
@@ -600,7 +619,7 @@ typedef void(^_Nullable errorViewControllerCompletionHandler)(enum ErrorViewCont
                 // CPU
                 if ([SettingsKVStore sharedStore].showCPUTemperatureEnabled) {
                     item = [weakSelf.item.menu itemWithTag:kCPUTempMenuItemTag];
-                    item.title = SWF(@"CPU Temperature: %.2f °C", cpuInfo.temperature);
+                    item.title = SWF(@"Temperature: %.2f °C", cpuInfo.temperature);
                 }
                 
                 // Fans
@@ -678,7 +697,7 @@ typedef void(^_Nullable errorViewControllerCompletionHandler)(enum ErrorViewCont
     for (NSUInteger i = 0; i < information.cores.count; i++) {
         CPUCore *core = information.cores[i];
         NSMenuItem *item = [self.item.menu itemWithTag:kCPUActivityBaseCoreMenuItemTag + i];
-        item.title = SWF(@"CPU Core %lu Activity: %.2f%%", (unsigned long)i + 1, core.percent * 100.0);
+        item.title = SWF(@"Core %lu Activity: %.2f%%", (unsigned long)i + 1, core.percent * 100.0);
     }
 }
 

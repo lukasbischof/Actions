@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4831CD701EE86E68003198CC /* CPUStaticInformation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4831CD6F1EE86E68003198CC /* CPUStaticInformation.m */; };
 		8008FDC21D20603400D5405F /* NSURL+sandboxing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8008FDC11D20603400D5405F /* NSURL+sandboxing.m */; };
 		8014A70C1A48704C00856DD4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8014A70B1A48704C00856DD4 /* AppDelegate.m */; };
 		8014A70E1A48704C00856DD4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8014A70D1A48704C00856DD4 /* main.m */; };
@@ -45,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4831CD6E1EE86E68003198CC /* CPUStaticInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPUStaticInformation.h; sourceTree = "<group>"; };
+		4831CD6F1EE86E68003198CC /* CPUStaticInformation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPUStaticInformation.m; sourceTree = "<group>"; };
 		8008FDC01D20603400D5405F /* NSURL+sandboxing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+sandboxing.h"; sourceTree = "<group>"; };
 		8008FDC11D20603400D5405F /* NSURL+sandboxing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURL+sandboxing.m"; sourceTree = "<group>"; };
 		8014A7051A48704B00856DD4 /* Actions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Actions.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -228,6 +231,8 @@
 				80ECF58C1CD8F43700815B12 /* SMCWrapper.m */,
 				80B93EE41CD7A55F007A0AC1 /* CPUUsageWatcher.h */,
 				80B93EE51CD7A55F007A0AC1 /* CPUUsageWatcher.m */,
+				4831CD6E1EE86E68003198CC /* CPUStaticInformation.h */,
+				4831CD6F1EE86E68003198CC /* CPUStaticInformation.m */,
 				80D799EB1CE4FCD500050A9D /* NTWRKInfo.h */,
 				80D799EC1CE4FCD500050A9D /* NTWRKInfo.m */,
 			);
@@ -366,6 +371,7 @@
 				80FC55261CD4DA5700DFFF61 /* smc.c in Sources */,
 				80CF91E71D0B1BD30024534E /* ExecutableFile.m in Sources */,
 				80F00BAB1A487F490093568D /* NSApplication+relaunch.m in Sources */,
+				4831CD701EE86E68003198CC /* CPUStaticInformation.m in Sources */,
 				80EBFB621C8394D700F8582D /* NSArray+Reverse.m in Sources */,
 				8094CB9E1CD68C1D00F6D6DA /* SettingsViewController.swift in Sources */,
 				80ECF58D1CD8F43700815B12 /* SMCWrapper.m in Sources */,
