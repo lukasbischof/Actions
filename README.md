@@ -2,7 +2,7 @@
 A small macOS application for displaying useful system information and providing customisable actions.
 
 ## Functionality
-The application is a statusbar application that provides a customisable menu with customisable actions and a menu section with system information such as CPU usage, Fan speeds, DC/IN and networking information. 
+The application is a statusbar application that provides a customisable menu with customisable actions and a menu section with system information such as CPU usage, clock speed, Fan speeds, DC/IN and networking information. 
 
 ## Installation
 The project is a Xcode project which can simply be built in Xcode under Product > Build. The application is most useful if specified for instant launch at system startup.
