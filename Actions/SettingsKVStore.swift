@@ -166,7 +166,7 @@ internal class NetworkingSettings: NSObject, NSCoding {
         // can't load settings from user defaults => return settings with default values
         let defaultSettings: [NetworkingOption] = [
             NetworkingOption(displayName: "Host Name", enabled: true, bindingPropertyName: "hostName"),
-            NetworkingOption(displayName: "Addresses", enabled: true, bindingPropertyName: "interfaces")
+            NetworkingOption(displayName: "Interfaces", enabled: true, bindingPropertyName: "interfaces")
         ]
         
         let settings = NetworkingSettings(settings: defaultSettings)

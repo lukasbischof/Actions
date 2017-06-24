@@ -12,6 +12,7 @@
 #import <arpa/inet.h>
 #import <netdb.h>
 #import <sys/ioctl.h> // I/O control
+#import <netinet/in.h>
 #import <net/if.h>
 
 /* ************************************ */
@@ -20,16 +21,17 @@
 
 @interface NTWRKInterface ()
 
-- (nonnull instancetype)initWithName:(NSString *_Nonnull)name andAddress:(NTWRKAddress *)address;
+- (nonnull instancetype)initWithName:(NSString *)name info:(NTWRKIFaceInfo *)info andAddress:(NTWRKAddress *)address;
 
 @end
 
 @implementation NTWRKInterface
 
-- (instancetype)initWithName:(NSString *)name andAddress:(NTWRKAddress *)address
+- (instancetype)initWithName:(NSString *)name info:(NTWRKIFaceInfo *)info andAddress:(NTWRKAddress *)address
 {
     if ((self = [super init])) {
         _name = name;
+        _info = info;
         _address = address;
     }
     
@@ -43,8 +45,19 @@
 
 - (NSString *)menuItemValue
 {
+    NSMutableString *additional = [NSMutableString new];
+    if (_info->isRunning && _info->isUp) {
+        [additional appendString:@"UP & RUNNING"];
+    } else {
+        [additional appendString:@"DOWN"];
+    }
+    
+    if (_info->isLoopback) {
+        [additional appendString:@", LOOPBACK"];
+    }
+    
     if (self.address)
-        return SWF(@"%@: %@", self.name, (__bridge NSString *)self.address->name);
+        return SWF(@"%@: %@ [%@]", self.name, (__bridge NSString *)self.address->name, additional);
     else
         return SWF(@"%@: n/a", self.name);
 }
@@ -98,13 +111,47 @@
     
     NSMutableArray<NTWRKInterface *> *interfaces = [NSMutableArray arrayWithCapacity:items.count];
     for (NSString *interface in items) {
-        NTWRKAddress *address = get_iface_address([interface UTF8String]);
-        NTWRKInterface *retInterface = [[NTWRKInterface alloc] initWithName:interface andAddress:address];
+        NTWRKAddress *address = get_iface_address(interface.UTF8String);
+        NTWRKIFaceInfo *info = get_iface_info(interface.UTF8String);
+        NTWRKInterface *retInterface = [[NTWRKInterface alloc] initWithName:interface
+                                                                       info:info
+                                                                 andAddress:address];
         
         [interfaces addObject:retInterface];
     }
     
     return interfaces;
+}
+
+#define ERROR(msg, ...) do {        \
+    printf(msg, ##__VA_ARGS__);     \
+    return NULL;                    \
+} while(0)
+
+static NTWRKIFaceInfo *get_iface_info(const char *_Nullable ifname) {
+    if (NULL == ifname)
+        ERROR("No ifname\n");
+    
+    int socId = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+    if (socId < 0)
+        ERROR("Socket failed. Errno = %d\n", errno);
+    
+    struct ifreq if_req;
+    (void)strncpy(if_req.ifr_name, ifname, sizeof(if_req.ifr_name));
+    int rv = ioctl(socId, SIOCGIFFLAGS, &if_req);
+    
+    shutdown(socId, SHUT_RDWR);
+    close(socId);
+    
+    if (rv == -1)
+        ERROR("Ioctl failed. Errno = %d\n", errno);
+    
+    NTWRKIFaceInfo *info = malloc(sizeof(NTWRKIFaceInfo));
+    info->isLoopback = !!(if_req.ifr_flags & IFF_LOOPBACK);
+    info->isRunning = !!(if_req.ifr_flags & IFF_RUNNING);
+    info->isUp = !!(if_req.ifr_flags & IFF_UP);
+    
+    return info;
 }
 
 static NTWRKAddress *get_iface_address(const char *interface) {
@@ -144,6 +191,8 @@ static NTWRKAddress *get_iface_address(const char *interface) {
     address->address = ip;
     address->name = CFStringCreateWithCString(kCFAllocatorDefault, val, kCFStringEncodingUTF8);
     address->ipVersion = NTWRKIPVersionIPv4;
+    
+    /* @todo Support IPv6 */
     
     return address;
 }

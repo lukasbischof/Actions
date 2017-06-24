@@ -25,10 +25,17 @@ typedef struct {
     CFStringRef _Nonnull name;
 } NTWRKAddress;
 
+typedef struct {
+    BOOL isLoopback;
+    BOOL isUp;
+    BOOL isRunning;
+} NTWRKIFaceInfo;
+
 @interface NTWRKInterface : NSObject <CustomNetworkingMenuItem>
 
 @property (strong, nonatomic, readonly, nonnull) NSString *name;
 @property (assign, nonatomic, readonly) NTWRKAddress *_Nullable address;
+@property (assign, nonatomic, readonly) NTWRKIFaceInfo *_Nullable info;
 
 @end
 
