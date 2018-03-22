@@ -139,6 +139,6 @@ kern_return_t SMCGetTotalFansInSystem(int *totalFans);
 kern_return_t SMCGetFanInfo(int *count, SMCFan *fans[]);
 kern_return_t SMCGetSystemTotalDCIN(double *lineIn);
 
-kern_return_t SMCOpen();
-kern_return_t SMCClose();
+kern_return_t SMCOpen(void);
+kern_return_t SMCClose(void);
 

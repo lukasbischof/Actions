@@ -437,18 +437,18 @@ kern_return_t SMCGetSystemTotalDCIN(double *lineIn)
     kern_return_t result;
     SMCVal_t      val;
     UInt32Char_t  key = SMC_KEY_DCIN_SYS_TOT;
-    
+
     result = SMCReadKey(key, &val);
     if (result != kIOReturnSuccess)
         return result;
     else if (val.dataSize <= 0)
         return kIOReturnError;
-    
+
     if (strcmp(val.dataType, DATATYPE_SP78) == 0)
         *lineIn = ((SInt16)ntohs(*(UInt16 *)val.bytes)) / 256.0;
     else
         return kIOReturnError;
-    
+
     return result;
 }
 
