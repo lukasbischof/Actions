@@ -86,7 +86,7 @@ class ErrorViewController: NSViewController {
     }
     
     override func viewDidAppear() {
-        self.view.window?.styleMask = NSWindowStyleMask(rawValue: self.view.window!.styleMask.rawValue & ~NSResizableWindowMask.rawValue)
+        self.view.window?.styleMask = NSWindowStyleMask(rawValue: self.view.window!.styleMask.rawValue & ~NSWindowStyleMask.resizable.rawValue)
     }
     
     @IBAction func okButtonPressed(_ sender: NSButton) {
