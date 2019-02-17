@@ -405,7 +405,7 @@ internal class SettingsKVStore: NSObject {
         }
     }
     
-    internal var networkingSettings: ImplicitlyUnwrappedOptional<NetworkingSettings>
+    internal var networkingSettings: NetworkingSettings!
     
     private var _scriptsDir: URL!
     internal var scriptsDirectory: URL? {
@@ -449,7 +449,7 @@ internal class SettingsKVStore: NSObject {
                 // ~/Documents/Scripts Pfad bekommen
                 let documents = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
                 let path = NSString(string: documents).appendingPathComponent("Scripts") as String
-                if let url = URL(fileURLWithPath: path, isDirectory: true) as URL! {
+                if let url = URL(fileURLWithPath: path, isDirectory: true) as URL? {
                     let finalPath = url.path
                     
                     var isDirectory: ObjCBool = false
