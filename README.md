@@ -19,3 +19,7 @@ Save your Automator Files as Automator Workflows (.workflow).
 
 #### Bundles
 You can even compile C code in a bundle and provide a void run() funtion, which then gets executed by the application.
+
+## App
+After installing, you see a new menu in your status bar:
+![image](https://user-images.githubusercontent.com/8350985/70265148-169cd200-179a-11ea-987c-5284fea9abee.png)
