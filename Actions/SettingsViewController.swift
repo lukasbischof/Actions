@@ -16,7 +16,7 @@ class SettingsViewController: NSTabViewController {
         super.viewDidLoad()
         // Do view setup here.
         
-        self.tabView.tabViewType = NSTabViewType.noTabsNoBorder
+      self.tabView.tabViewType = NSTabView.TabType.noTabsNoBorder
         
         // update
         didReceiveShouldToggleNetworkingTabNotification(nil)
@@ -25,7 +25,7 @@ class SettingsViewController: NSTabViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(SettingsViewController.didReceiveShouldToggleNetworkingTabNotification(_:)), name: NSNotification.Name(rawValue: toggleNetworkingTabNotificationKey), object: nil)
     }
     
-    func didReceiveShouldToggleNetworkingTabNotification(_ notification: Notification?) {
+  @objc func didReceiveShouldToggleNetworkingTabNotification(_ notification: Notification?) {
         toggleNetworkingTab(SettingsKVStore.sharedStore.showNetworkInformationEnabled && SettingsKVStore.sharedStore.systemWatchdogEnabled)
     }
     
@@ -43,9 +43,9 @@ class SettingsViewController: NSTabViewController {
     
     private func toggleNetworkingTab(_ enabled: Bool) -> Void {
         if enabled {
-            tabView.tabViewItem(at: 2).image = NSImage(named: "networking")
+          tabView.tabViewItem(at: 2).image = NSImage(named: NSImage.Name(rawValue: "networking"))
         } else {
-            tabView.tabViewItem(at: 2).image = NSImage(named: "networking-disabled")
+          tabView.tabViewItem(at: 2).image = NSImage(named: NSImage.Name(rawValue: "networking-disabled"))
         }
     }
     

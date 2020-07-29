@@ -63,7 +63,7 @@
 
 import Cocoa
 
-@objc
+@objcMembers
 class Constants: NSObject {
     static let kScriptsDirectoryKey: NSString = NSString(string: "kScriptsDirectory")
     static let kScriptsBookmarkKey: NSString = NSString(string: "kScriptsBookmark")
@@ -100,7 +100,8 @@ internal class NetworkingOptionPropertyBinding<T>: NSObject {
     }
 }
 
-internal class NetworkingOption: NSObject, NSCoding {
+@objcMembers
+class NetworkingOption: NSObject, NSCoding {
     var enabled: Bool = true
     var displayName: String!
     var bindingProperty: NetworkingOptionPropertyBinding<NetworkingOptionType>
@@ -146,7 +147,8 @@ enum NetworkingSettingsError: Error {
 let networkingSettingsUserDefaultsKey: String = "networkingSettings"
 
 /// represents the settings of the NETWORKING section
-internal class NetworkingSettings: NSObject, NSCoding {
+@objcMembers
+class NetworkingSettings: NSObject, NSCoding {
     private var settings: Array<NetworkingOption> = []
     
     var didChangeNetworkSettingsListner: (() -> Void)?
@@ -250,15 +252,11 @@ internal class NetworkingSettings: NSObject, NSCoding {
     }
     
     func getEnabledOptions() -> [NetworkingOption] {
-        return settings.filter {
-            $0.enabled
-        }
+        return settings.filter { $0.enabled }
     }
     
-    func getDisabledOptions() -> Array<NetworkingOption> {
-        return settings.filter({
-            !$0.enabled
-        })
+    func getDisabledOptions() -> [NetworkingOption] {
+        return settings.filter { !$0.enabled }
     }
     
     func addOption(_ option: NetworkingOption) {
@@ -271,10 +269,10 @@ internal class NetworkingSettings: NSObject, NSCoding {
     
     func getValueForOption(_ option: NetworkingOption, withObject object: AnyObject) -> NetworkingOptionType? {
         var outCount: UInt32 = 0
-        let properties: UnsafeMutablePointer<objc_property_t?>! = class_copyPropertyList(type(of: object), &outCount)
+        let properties = class_copyPropertyList(type(of: object), &outCount)
         
         for i in 0..<Int(outCount) {
-            let property = properties.advanced(by: i).pointee
+            guard let property = properties?.advanced(by: i).pointee else { return nil }
             let namePtr: UnsafePointer<Int8> = property_getName(property)
             let name = NSString(format: "%s", namePtr) as String
             
@@ -291,7 +289,8 @@ internal class NetworkingSettings: NSObject, NSCoding {
     }
 }
 
-internal class SettingsKVStore: NSObject {
+@objcMembers
+class SettingsKVStore: NSObject {
     // *** HELPER FUNCTIONS ***
     private func getBool(_ key: String, defaultValue: Bool) -> Bool {
         if UserDefaults.standard.dictionaryRepresentation().keys.contains(key) {
@@ -405,7 +404,7 @@ internal class SettingsKVStore: NSObject {
         }
     }
     
-    internal var networkingSettings: ImplicitlyUnwrappedOptional<NetworkingSettings>
+    internal var networkingSettings: Optional<NetworkingSettings>
     
     private var _scriptsDir: URL!
     internal var scriptsDirectory: URL? {
@@ -449,34 +448,31 @@ internal class SettingsKVStore: NSObject {
                 // ~/Documents/Scripts Pfad bekommen
                 let documents = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
                 let path = NSString(string: documents).appendingPathComponent("Scripts") as String
-                if let url = URL(fileURLWithPath: path, isDirectory: true) as URL! {
-                    let finalPath = url.path
-                    
-                    var isDirectory: ObjCBool = false
-                    if FileManager.default.fileExists(atPath: finalPath, isDirectory: &isDirectory) {
-                        // *** ~/Documents/Scripts ORDNER EXISTIERT BEREITS => DIESE URL AUCH ZURÜCKGEBEN ***
-                        if isDirectory.boolValue {
-                            self.scriptsDirectory = url // Über den Setter dieser Property, damit auch die User-Defaults gesetzt werden
-                            return self._scriptsDir
-                        }
-                    }
-                    
-                    // *** Scripts ORDNER EXISTERT NOCH NICHT => ERSTELLEN UND DANN DEN PFAD ZURÜCKGEBEN ***
-                    do {
-                        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
-                        
-                        // Ein eigenes Ordner-Icon erstellen
-                        let icon = NSImage(named: "scriptsDir")
-                        NSWorkspace.shared().setIcon(icon, forFile: finalPath, options: NSWorkspaceIconCreationOptions(rawValue: 0))
-                        
+                let url = URL(fileURLWithPath: path, isDirectory: true)
+                let finalPath = url.path
+                
+                var isDirectory: ObjCBool = false
+                if FileManager.default.fileExists(atPath: finalPath, isDirectory: &isDirectory) {
+                    // *** ~/Documents/Scripts ORDNER EXISTIERT BEREITS => DIESE URL AUCH ZURÜCKGEBEN ***
+                    if isDirectory.boolValue {
                         self.scriptsDirectory = url // Über den Setter dieser Property, damit auch die User-Defaults gesetzt werden
-                        return url
-                    } catch (let exception) {
-                        print(exception)
-                        return nil
+                        return self._scriptsDir
                     }
-                } else {
-                    fatalError("Can't create URL") // Should also never happen that we can't create a URL
+                }
+                
+                // *** Scripts ORDNER EXISTERT NOCH NICHT => ERSTELLEN UND DANN DEN PFAD ZURÜCKGEBEN ***
+                do {
+                    try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
+                    
+                    // Ein eigenes Ordner-Icon erstellen
+                    let icon = NSImage(named: NSImage.Name(rawValue: "scriptsDir"))
+                    NSWorkspace.shared.setIcon(icon, forFile: finalPath, options: NSWorkspace.IconCreationOptions(rawValue: 0))
+                    
+                    self.scriptsDirectory = url // Über den Setter dieser Property, damit auch die User-Defaults gesetzt werden
+                    return url
+                } catch (let exception) {
+                    print(exception)
+                    return nil
                 }
             }
         }
@@ -525,12 +521,12 @@ internal class SettingsKVStore: NSObject {
         self.showNetworkInformationEnabled = getBool(Constants.kShowNetworkInformationEnabledKey as String, defaultValue: true)
         
         self.networkingSettings = NetworkingSettings.loadSettings()
-        self.networkingSettings.didChangeNetworkSettingsListner = { _ -> Void in
+        self.networkingSettings?.didChangeNetworkSettingsListner = { () -> Void in
             print("Did change networking settings")
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.kSettingsKVStoreDidChangeSettingsNotificationName as String), object: self, userInfo: [
                 NSString(string: "key"): NSString(string: "networkingInformation"),
-                NSString(string: "value"): self.networkingSettings
+                NSString(string: "value"): self.networkingSettings as Any
             ])
         }
     }

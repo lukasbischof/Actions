@@ -71,3 +71,5 @@ iOSInjectionProject/
 
 # Mac
 *.DS_Store
+
+Actions.xcodeproj/project.xcworkspace/xcshareddata/
