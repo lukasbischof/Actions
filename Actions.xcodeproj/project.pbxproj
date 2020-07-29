@@ -23,7 +23,7 @@
 		80B93EE31CD7607C007A0AC1 /* SettingsKVStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B93EE21CD7607C007A0AC1 /* SettingsKVStore.swift */; };
 		80B93EE61CD7A55F007A0AC1 /* CPUUsageWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 80B93EE51CD7A55F007A0AC1 /* CPUUsageWatcher.m */; };
 		80CF91E71D0B1BD30024534E /* ExecutableFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 80CF91E61D0B1BD30024534E /* ExecutableFile.m */; };
-		80D63C131CFB7A3300335F94 /* LBFastHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D63C121CFB7A3300335F94 /* LBFastHTTPRequest.m */; };
+		80D63C131CFB7A3300335F94 /* FastHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D63C121CFB7A3300335F94 /* FastHTTPRequest.m */; };
 		80D799ED1CE4FCD500050A9D /* NTWRKInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 80D799EC1CE4FCD500050A9D /* NTWRKInfo.m */; };
 		80D799EF1CE505B400050A9D /* NetworkInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D799EE1CE505B400050A9D /* NetworkInformationViewController.swift */; };
 		80EBFB621C8394D700F8582D /* NSArray+Reverse.m in Sources */ = {isa = PBXBuildFile; fileRef = 80EBFB611C8394D700F8582D /* NSArray+Reverse.m */; };
@@ -73,8 +73,8 @@
 		80B93EE51CD7A55F007A0AC1 /* CPUUsageWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CPUUsageWatcher.m; sourceTree = "<group>"; };
 		80CF91E51D0B1BD30024534E /* ExecutableFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExecutableFile.h; sourceTree = "<group>"; };
 		80CF91E61D0B1BD30024534E /* ExecutableFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExecutableFile.m; sourceTree = "<group>"; };
-		80D63C111CFB7A3300335F94 /* LBFastHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBFastHTTPRequest.h; sourceTree = "<group>"; };
-		80D63C121CFB7A3300335F94 /* LBFastHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBFastHTTPRequest.m; sourceTree = "<group>"; };
+		80D63C111CFB7A3300335F94 /* FastHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastHTTPRequest.h; sourceTree = "<group>"; };
+		80D63C121CFB7A3300335F94 /* FastHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastHTTPRequest.m; sourceTree = "<group>"; };
 		80D799EB1CE4FCD500050A9D /* NTWRKInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTWRKInfo.h; sourceTree = "<group>"; };
 		80D799EC1CE4FCD500050A9D /* NTWRKInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTWRKInfo.m; sourceTree = "<group>"; };
 		80D799EE1CE505B400050A9D /* NetworkInformationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkInformationViewController.swift; sourceTree = "<group>"; };
@@ -155,8 +155,8 @@
 				8014A70D1A48704C00856DD4 /* main.m */,
 				8094CB9C1CD68C1C00F6D6DA /* Actions-Bridging-Header.h */,
 				80886B3B1CEA4F8F00A5BF89 /* PrefixHeader.pch */,
-				80D63C111CFB7A3300335F94 /* LBFastHTTPRequest.h */,
-				80D63C121CFB7A3300335F94 /* LBFastHTTPRequest.m */,
+				80D63C111CFB7A3300335F94 /* FastHTTPRequest.h */,
+				80D63C121CFB7A3300335F94 /* FastHTTPRequest.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -362,7 +362,7 @@
 				80D799ED1CE4FCD500050A9D /* NTWRKInfo.m in Sources */,
 				80ECF5881CD8A93500815B12 /* AppearanceViewController.swift in Sources */,
 				80B93EDF1CD75E37007A0AC1 /* LocationsViewController.swift in Sources */,
-				80D63C131CFB7A3300335F94 /* LBFastHTTPRequest.m in Sources */,
+				80D63C131CFB7A3300335F94 /* FastHTTPRequest.m in Sources */,
 				80D799EF1CE505B400050A9D /* NetworkInformationViewController.swift in Sources */,
 				80886B3D1CEA60F800A5BF89 /* CustomNetworkingMenuItem.swift in Sources */,
 				8014A70E1A48704C00856DD4 /* main.m in Sources */,

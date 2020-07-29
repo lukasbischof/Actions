@@ -1,19 +1,20 @@
 //
-//  LBFastHTTPRequest.m
-//  LBFastHTTPRequest
+//  FastHTTPRequest.m
+//  FastHTTPRequest
 //
 //  Created by Lukas Bischof on 14.01.15.
 //  Copyright (c) 2015 Lukas. All rights reserved.
 //
 
-#import "LBFastHTTPRequest.h"
+#import "FastHTTPRequest.h"
 
-@implementation LBFastHTTPRequest
+@implementation FastHTTPRequest
 
 - (void)setMethod:(NSString *)method
 {
     _method = method;
     
+    // TODO: It does not really make sense that POST requests are automatically of type x-www-form-urlencoded
     if ([method isEqualToString:@"POST"]) {
         if (!_httpHeaderFields && self.httpBody) {
             _httpHeaderFields = @{
@@ -24,26 +25,26 @@
     }
 }
 
-+ (void)sendRequestWithURL:(NSURL *)url httpMethod:(NSString *)method httpBody:(NSData *)body andResponse:(LBHTTPRequestResponseHandler)handler
++ (void)sendRequestWithURL:(NSURL *)url httpMethod:(NSString *)method httpBody:(NSData *)body andResponse:(HTTPRequestResponseHandler)handler
 {
-    LBFastHTTPRequest *request = [[LBFastHTTPRequest alloc] initWithURL:url];
+    FastHTTPRequest *request = [[FastHTTPRequest alloc] initWithURL:url];
     request.httpBody = body;
     request.method = [method uppercaseString];
     request.responseHandler = handler;
     [request send];
 }
 
-+ (void)sendRequestWithURL:(NSURL *)url httpMethod:(NSString *)method andResponse:(LBHTTPRequestResponseHandler)handler
++ (void)sendRequestWithURL:(NSURL *)url httpMethod:(NSString *)method andResponse:(HTTPRequestResponseHandler)handler
 {
-    LBFastHTTPRequest *request = [[LBFastHTTPRequest alloc] initWithURL:url];
+    FastHTTPRequest *request = [[FastHTTPRequest alloc] initWithURL:url];
     request.method = [method uppercaseString];
     request.responseHandler = handler;
     [request send];
 }
 
-+ (void)sendRequestWithURL:(NSURL *)url andResponse:(LBHTTPRequestResponseHandler)handler
++ (void)sendRequestWithURL:(NSURL *)url andResponse:(HTTPRequestResponseHandler)handler
 {
-    [LBFastHTTPRequest sendRequestWithURL:url
+    [FastHTTPRequest sendRequestWithURL:url
                                httpMethod:@"GET"
                               andResponse:handler];
 }
@@ -85,17 +86,6 @@
         
         self.responseHandler(data, (NSHTTPURLResponse *)response);
     }];
-}
-
-+ (NSURL *)getURLFromString:(NSString *)string
-{
-    // Diese Methode ist eigentlich total unnötig, ich verwende sie nur um zu schauen, ob Änderungen übernommen werden (in einem externen Projekt)
-    return [NSURL URLWithString:string];
-}
-
-+ (NSString *)getClassDescription
-{
-    return @"Use this class to make HTTP requests fastly :)";
 }
 
 @end

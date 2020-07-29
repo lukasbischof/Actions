@@ -31,14 +31,13 @@ typedef struct {
     BOOL isRunning;
 } NTWRKIFaceInfo;
 
-@interface NTWRKInterface : NSObject <CustomNetworkingMenuItem>
+@interface NTWRKInterface : NSObject<CustomNetworkingMenuItem>
 
 @property (strong, nonatomic, readonly, nonnull) NSString *name;
 @property (assign, nonatomic, readonly) NTWRKAddress *_Nullable address;
 @property (assign, nonatomic, readonly) NTWRKIFaceInfo *_Nullable info;
 
 @end
-
 
 
 /* ************************************ */
@@ -81,14 +80,13 @@ typedef struct {
 
 @end
 
-@protocol NTWRKBonjourDelegate <NSObject>
+@protocol NTWRKBonjourDelegate<NSObject>
 
-- (void)networkInfo:(NTWRKInfo *_Nonnull)info cantSearch:(NSDictionary<NSString *,NSNumber *> *_Nonnull)errorDict;
+- (void)networkInfo:(NTWRKInfo *_Nonnull)info cantSearch:(NSDictionary<NSString *, NSNumber *> *_Nonnull)errorDict;
 - (void)networkInfo:(NTWRKInfo *_Nonnull)info didFindServices:(NSArray<NSNetService *> *_Nonnull)services previousActiveServicesCount:(NSNumber *_Nonnull)count;
 - (void)networkInfo:(NTWRKInfo *_Nonnull)info didRemoveServices:(NSArray<NSNetService *> *_Nonnull)services previousActiveServicesCount:(NSNumber *_Nonnull)count;
 
 @end
-
 
 
 /* ************************************* */

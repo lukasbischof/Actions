@@ -11,14 +11,13 @@
 
 @implementation NSURL (sandboxing)
 
-- (void)accessResourceUsingBlock:(void (^)(void))block
-{
+- (void)accessResourceUsingBlock:(void (^)(void))block {
     if ([SettingsKVStore sharedStore].appIsSandboxed) {
         [self startAccessingSecurityScopedResource];
     }
-    
+
     block();
-    
+
     if ([SettingsKVStore sharedStore].appIsSandboxed) {
         [self stopAccessingSecurityScopedResource];
     }

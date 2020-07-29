@@ -75,28 +75,28 @@ class Constants: NSObject {
     static let kShowFansEnabledKey: NSString = NSString(string: "kShowFansEnabled")
     static let kShowLineInPowerEnabledKey: NSString = NSString(string: "kShowPowerEnabled")
     static let kShowNetworkInformationEnabledKey: NSString = NSString(string: "kShowNetworkInformationEnabled")
-    
+
     static let kSettingsKVStoreDidChangeSettingsNotificationName = NSString(string: "kSettingsKVStoreDidChangeSettingsNotificationName")
 }
 
 @objc
 protocol NetworkingOptionType {
-    
+
 }
 
 extension NSString: NetworkingOptionType {}
-extension NSArray: NetworkingOptionType {}
 
+extension NSArray: NetworkingOptionType {}
 
 internal class NetworkingOptionPropertyBinding<T>: NSObject {
     var propertyName: String
-    
+
     init(name: String) {
         self.propertyName = name
     }
-    
+
     func isKindOfSelf(_ type: Any) -> Bool {
-        return type is T
+        type is T
     }
 }
 
@@ -105,32 +105,32 @@ class NetworkingOption: NSObject, NSCoding {
     var enabled: Bool = true
     var displayName: String!
     var bindingProperty: NetworkingOptionPropertyBinding<NetworkingOptionType>
-    
+
     init(displayName: String, enabled: Bool, bindingPropertyName propertyName: String) {
         self.enabled = enabled
         self.displayName = displayName
         self.bindingProperty = NetworkingOptionPropertyBinding(name: propertyName)
-        
+
         super.init()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         self.enabled = aDecoder.decodeBool(forKey: "enabled")
-        
+
         guard let displayName = aDecoder.decodeObject(forKey: "displayName") as? String else {
             return nil
         }
-        
+
         guard let bindingPropertyName = aDecoder.decodeObject(forKey: "binding") as? String else {
             return nil
         }
-        
+
         self.bindingProperty = NetworkingOptionPropertyBinding(name: bindingPropertyName)
         self.displayName = displayName
-        
+
         super.init()
     }
-    
+
     func encode(with aCoder: NSCoder) {
         aCoder.encode(enabled, forKey: "enabled")
         aCoder.encode(displayName, forKey: "displayName")
@@ -150,63 +150,63 @@ let networkingSettingsUserDefaultsKey: String = "networkingSettings"
 @objcMembers
 class NetworkingSettings: NSObject, NSCoding {
     private var settings: Array<NetworkingOption> = []
-    
+
     var didChangeNetworkSettingsListner: (() -> Void)?
-    
+
     // MARK: class functions
     class func loadSettings() -> NetworkingSettings {
         if let data = UserDefaults.standard.data(forKey: networkingSettingsUserDefaultsKey) {
             if let val = NSKeyedUnarchiver.unarchiveObject(with: data) as? NetworkingSettings {
                 // successfully loaded networking settings from user defaults
-                
+
                 if val.settings.count > 0 {
                     return val
                 }
             }
         }
-        
+
         // can't load settings from user defaults => return settings with default values
         let defaultSettings: [NetworkingOption] = [
             NetworkingOption(displayName: "Host Name", enabled: true, bindingPropertyName: "hostName"),
             NetworkingOption(displayName: "Interfaces", enabled: true, bindingPropertyName: "interfaces")
         ]
-        
+
         let settings = NetworkingSettings(settings: defaultSettings)
         settings.synchronize()
         return settings
     }
-    
+
     // MARK: initialize methods & NSCoding
     init(settings: [NetworkingOption]) {
         self.settings = settings
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init()
-        
+
         if let settings = aDecoder.decodeObject(forKey: "settings") as? [NetworkingOption] {
             self.settings = settings
         } else {
             return nil
         }
     }
-    
+
     func encode(with aCoder: NSCoder) {
         aCoder.encode(self.settings, forKey: "settings")
     }
-    
+
     // MARK: Settings modification methods
     func synchronize() {
         UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: networkingSettingsUserDefaultsKey)
         UserDefaults.standard.synchronize()
     }
-    
+
     private func didChangeSettings() {
         synchronize()
         didChangeNetworkSettingsListner?()
     }
-    
-    
+
+
     func alterOption(_ option: NetworkingOption, atIndex index: Int) throws {
         if settings.count > index && index >= 0 {
             settings[index] = option
@@ -215,18 +215,18 @@ class NetworkingSettings: NSObject, NSCoding {
             throw NetworkingSettingsError.indexOutOfBounds(maxIndex: settings.count - 1)
         }
     }
-    
+
     func moveOptionAtIndex(_ index: UInt, toIndex: UInt) throws {
         if index >= UInt(settings.count) {
             throw NetworkingSettingsError.indexOutOfBounds(maxIndex: settings.count - 1)
         } else if toIndex > UInt(settings.count) {
             throw NetworkingSettingsError.targetIndexOutOfBounds(maxTargetIndex: settings.count)
         }
-        
+
         settings.moveItemAtIndex(Int(index), toIndex: Int(toIndex))
         didChangeSettings()
     }
-    
+
     func moveOption(_ option: NetworkingOption, afterOption targetOption: NetworkingOption) throws -> Void {
         if let fromIndex = settings.firstIndex(of: option) {
             if let targetIndex = settings.firstIndex(of: targetOption) {
@@ -238,44 +238,44 @@ class NetworkingSettings: NSObject, NSCoding {
             throw NetworkingSettingsError.optionDoesNotExist(option: option)
         }
     }
-    
+
     func getOptionAtIndex(_ index: Int) throws -> NetworkingOption {
         if index >= settings.count || index < 0 {
             throw NetworkingSettingsError.indexOutOfBounds(maxIndex: settings.count - 1)
         }
-        
+
         return settings[index]
     }
-    
+
     func getSettings() -> [NetworkingOption] {
         return settings
     }
-    
+
     func getEnabledOptions() -> [NetworkingOption] {
-        return settings.filter { $0.enabled }
+        settings.filter { $0.enabled }
     }
-    
+
     func getDisabledOptions() -> [NetworkingOption] {
-        return settings.filter { !$0.enabled }
+        settings.filter { !$0.enabled }
     }
-    
+
     func addOption(_ option: NetworkingOption) {
         defer {
             didChangeSettings()
         }
-        
+
         settings.append(option)
     }
-    
+
     func getValueForOption(_ option: NetworkingOption, withObject object: AnyObject) -> NetworkingOptionType? {
         var outCount: UInt32 = 0
         let properties = class_copyPropertyList(type(of: object), &outCount)
-        
+
         for i in 0..<Int(outCount) {
             guard let property = properties?.advanced(by: i).pointee else { return nil }
             let namePtr: UnsafePointer<Int8> = property_getName(property)
             let name = NSString(format: "%s", namePtr) as String
-            
+
             if name == option.bindingProperty.propertyName {
                 if let val = object.value?(forKey: name) {
                     if option.bindingProperty.isKindOfSelf(val) {
@@ -284,7 +284,7 @@ class NetworkingSettings: NSObject, NSCoding {
                 }
             }
         }
-        
+
         return nil
     }
 }
@@ -299,39 +299,38 @@ class SettingsKVStore: NSObject {
             return defaultValue
         }
     }
-    
+
     private func setBool(_ value: Bool, forKey key: String) -> Void {
         UserDefaults.standard.set(value, forKey: key)
-        
+
         NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.kSettingsKVStoreDidChangeSettingsNotificationName as String), object: self, userInfo: [
             NSString(string: "key"): NSString(string: key),
             NSString(string: "value"): NSNumber(value: value)
         ])
     }
-    
+
     private func getVal(_ key: String) -> AnyObject? {
         return UserDefaults.standard.object(forKey: key) as AnyObject?
     }
-    
+
     private func setVal(_ key: String, value: AnyObject) {
         UserDefaults.standard.set(value, forKey: key)
-        
+
         NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.kSettingsKVStoreDidChangeSettingsNotificationName as String), object: self, userInfo: [
             NSString(string: "key"): NSString(string: key),
             NSString(string: "value"): value
         ])
     }
-    
+
     private func sync() {
         UserDefaults.standard.synchronize()
     }
-    
-    
-    
+
+
     // *** MAIN CLASS ***
-    
+
     static let sharedStore: SettingsKVStore = SettingsKVStore()
-    
+
     internal var enumeratedKeyboardShortcutsEnabled: Bool = true {
         didSet(oldValue) {
             if enumeratedKeyboardShortcutsEnabled != oldValue {
@@ -340,7 +339,7 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var systemWatchdogEnabled: Bool = true {
         didSet(oldValue) {
             if systemWatchdogEnabled != oldValue {
@@ -349,7 +348,7 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var showCPUTemperatureEnabled: Bool = true {
         didSet(oldValue) {
             if showCPUTemperatureEnabled != oldValue {
@@ -358,7 +357,7 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var showCPUInfo: Bool = true {
         didSet(oldValue) {
             if showCPUInfo != oldValue {
@@ -367,7 +366,7 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var showCPUUsageEnabled: Bool = true {
         didSet(oldValue) {
             if showCPUUsageEnabled != oldValue {
@@ -376,7 +375,7 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var showFansEnabled: Bool = true {
         didSet(oldValue) {
             if showFansEnabled != oldValue {
@@ -385,7 +384,7 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var showLineInPowerEnabled: Bool = true {
         didSet(oldValue) {
             if showLineInPowerEnabled != oldValue {
@@ -394,7 +393,7 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var showNetworkInformationEnabled: Bool = true {
         didSet(oldValue) {
             if showNetworkInformationEnabled != oldValue {
@@ -403,9 +402,9 @@ class SettingsKVStore: NSObject {
             }
         }
     }
-    
+
     internal var networkingSettings: Optional<NetworkingSettings>
-    
+
     private var _scriptsDir: URL!
     internal var scriptsDirectory: URL? {
         get {
@@ -419,7 +418,7 @@ class SettingsKVStore: NSObject {
                         do {
                             var isStale: ObjCBool = false
                             let url = try NSURL(resolvingBookmarkData: bookmark, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale) as URL
-                            
+
                             self._scriptsDir = url
                             return url
                         } catch (let exception) {
@@ -428,14 +427,14 @@ class SettingsKVStore: NSObject {
                     }
                 } else {
                     if let data = getVal(Constants.kScriptsDirectoryKey as String) as? Data {
-                        
+
                         if let val = NSKeyedUnarchiver.unarchiveObject(with: data) as? URL {
                             // *** WERT AUS DEN USER-DEFAULTS AUF KORREKTHEIT PRÜFEN ***
                             var isDirectory: ObjCBool = false
                             if FileManager.default.fileExists(atPath: val.path, isDirectory: &isDirectory) {
                                 if isDirectory.boolValue {
                                     // Alles korrekt
-                                    
+
                                     self._scriptsDir = val // Direktes setzen, da wir einen vorhandenen Wert nicht wieder in die Defaults schreiben müssen
                                     return val
                                 }
@@ -444,13 +443,13 @@ class SettingsKVStore: NSObject {
                     }
                     // else: Wert aus den NSUserDefaults war nicht valid => Vorgehen als ob keiner da gewesen wäre
                 }
-                
+
                 // ~/Documents/Scripts Pfad bekommen
                 let documents = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0]
                 let path = NSString(string: documents).appendingPathComponent("Scripts") as String
                 let url = URL(fileURLWithPath: path, isDirectory: true)
                 let finalPath = url.path
-                
+
                 var isDirectory: ObjCBool = false
                 if FileManager.default.fileExists(atPath: finalPath, isDirectory: &isDirectory) {
                     // *** ~/Documents/Scripts ORDNER EXISTIERT BEREITS => DIESE URL AUCH ZURÜCKGEBEN ***
@@ -459,15 +458,15 @@ class SettingsKVStore: NSObject {
                         return self._scriptsDir
                     }
                 }
-                
+
                 // *** Scripts ORDNER EXISTERT NOCH NICHT => ERSTELLEN UND DANN DEN PFAD ZURÜCKGEBEN ***
                 do {
                     try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
-                    
+
                     // Ein eigenes Ordner-Icon erstellen
                     let icon = NSImage(named: "scriptsDir")
                     NSWorkspace.shared.setIcon(icon, forFile: finalPath, options: NSWorkspace.IconCreationOptions(rawValue: 0))
-                    
+
                     self.scriptsDirectory = url // Über den Setter dieser Property, damit auch die User-Defaults gesetzt werden
                     return url
                 } catch (let exception) {
@@ -476,14 +475,14 @@ class SettingsKVStore: NSObject {
                 }
             }
         }
-        
+
         set {
             if newValue == nil {
                 fatalError("Can't set a nil value for the scripts directory")
             }
-            
+
             self._scriptsDir = newValue
-            
+
             if self.appIsSandboxed {
                 do {
                     let bookmark = try newValue!.bookmarkData(options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil)
@@ -496,23 +495,23 @@ class SettingsKVStore: NSObject {
             } else {
                 setVal(Constants.kScriptsDirectoryKey as String, value: NSKeyedArchiver.archivedData(withRootObject: self._scriptsDir as Any) as AnyObject)
             }
-            
+
             sync()
         }
     }
-    
+
     internal var appIsSandboxed: Bool {
         get {
             let environment = ProcessInfo.processInfo.environment
             return environment.keys.contains("APP_SANDBOX_CONTAINER_ID")
         }
     }
-    
+
     override init() {
         self.networkingSettings = NetworkingSettings.loadSettings()
-        
+
         super.init()
-        
+
         self.enumeratedKeyboardShortcutsEnabled = getBool(Constants.kEnumeratedKeyboardShortcutsEnabledKey as String, defaultValue: false)
         self.systemWatchdogEnabled = getBool(Constants.kSystemWatchdogEnabledKey as String, defaultValue: true)
         self.showCPUTemperatureEnabled = getBool(Constants.kShowCPUTemperatureEnabledKey as String, defaultValue: true)
@@ -521,17 +520,17 @@ class SettingsKVStore: NSObject {
         self.showFansEnabled = getBool(Constants.kShowFansEnabledKey as String, defaultValue: false)
         self.showLineInPowerEnabled = getBool(Constants.kShowLineInPowerEnabledKey as String, defaultValue: true)
         self.showNetworkInformationEnabled = getBool(Constants.kShowNetworkInformationEnabledKey as String, defaultValue: true)
-        
+
         self.networkingSettings?.didChangeNetworkSettingsListner = { () -> Void in
             print("Did change networking settings")
-            
+
             NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.kSettingsKVStoreDidChangeSettingsNotificationName as String), object: self, userInfo: [
                 NSString(string: "key"): NSString(string: "networkingInformation"),
                 NSString(string: "value"): self.networkingSettings as Any
             ])
         }
     }
-    
+
     internal func accessScriptsURLContents(handler: (() -> Void)!) -> Void {
         (self.scriptsDirectory as NSURL?)?.accessResource(handler)
     }
@@ -544,7 +543,7 @@ extension Array {
         if fromIndex == toIndex {
             return
         }
-        
+
         self.insert(self.remove(at: fromIndex), at: toIndex > self.count ? self.count : toIndex)
     }
 }

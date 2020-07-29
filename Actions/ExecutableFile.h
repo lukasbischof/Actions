@@ -20,13 +20,11 @@ typedef enum _ExecutableFileType ExecutableFileType;
 @property (assign, nonatomic, readonly) ExecutableFileType type;
 @property (DYNAMIC_PROPERTY) NSURL *url;
 
-
 + (nullable instancetype)executableFileWithURL:(NSURL *_Nonnull)url;
 
 /// Don't use the standard init method
 - (nullable instancetype)init NO_RETURN NS_UNAVAILABLE NS_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithURL:(NSURL *_Nonnull)url NS_DESIGNATED_INITIALIZER;
-
 - (NSError *_Nullable)runAction;
 
 @end

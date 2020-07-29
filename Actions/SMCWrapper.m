@@ -26,17 +26,15 @@
 
 @implementation SMCPowerInfo
 
-- (instancetype)initWithTotalSystemDCIN:(double)totalDCIN
-{
+- (instancetype)initWithTotalSystemDCIN:(double)totalDCIN {
     if ((self = [super init])) {
         _totalSystemDC_IN = totalDCIN;
     }
-    
+
     return self;
 }
 
 @end
-
 
 
 #pragma mark - CPU INFO
@@ -52,27 +50,23 @@
 
 @implementation SMCCPUInfo
 
-- (instancetype)initWithTemp:(double)temp
-{
+- (instancetype)initWithTemp:(double)temp {
     if ((self = [super init])) {
         _temperature = temp;
     }
-    
+
     return self;
 }
 
-- (double)tempInFarenheit
-{
+- (double)tempInFarenheit {
     return _temperature * 1.8 + 32.0;
 }
 
-- (NSString *)description
-{
+- (NSString *)description {
     return SWF(@"<SMCCPUInfo %p; temperature: %.3f°C>", self, _temperature);
 }
 
 @end
-
 
 
 #pragma mark - FAN INFO
@@ -100,8 +94,7 @@
               maximumSpeed:(float)max
                  safeSpeed:(float)safe
                targetSpeed:(float)target
-                   andMode:(int)mode
-{
+                   andMode:(int)mode {
     if ((self = [super init])) {
         _ID = [NSString stringWithUTF8String:ID];
         _actualSpeed = act;
@@ -111,17 +104,15 @@
         _targetSpeed = target;
         _mode = mode == SMC_FAN_MODE_AUTO ? SMCFanModeAuto : SMCFanModeForced;
     }
-    
+
     return self;
 }
 
-- (NSString *)description
-{
+- (NSString *)description {
     return SWF(@"<SMCFanInfo %p: current speed: %f, target speed: %f>", self, _actualSpeed, _targetSpeed);
 }
 
 @end
-
 
 
 #pragma mark - MAIN
@@ -134,68 +125,65 @@ NSString *const __nonnull kSMCWrapperKernelErrorDomain = @"kSMCWrapperKernelErro
 @implementation SMCWrapper
 
 #pragma mark - Init / dealloc
-+ (SMCWrapper *__nullable)wrapper
-{
+
++ (SMCWrapper *__nullable)wrapper {
     return [[SMCWrapper alloc] init];
 }
 
-- (instancetype)init
-{
-    if ([SettingsKVStore sharedStore].appIsSandboxed)
+- (instancetype)init {
+    if ([SettingsKVStore sharedStore].appIsSandboxed) {
         return nil;
-    
+    }
+
     if ((self = [super init])) {
         SMCOpen();
     }
-    
+
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     SMCClose();
 }
 
 #pragma mark - Interface methods
-+ (NSInteger)getFanCountWithError:(NSError *_Nullable __autoreleasing *)error
-{
+
++ (NSInteger)getFanCountWithError:(NSError *_Nullable __autoreleasing *)error {
     // Open SMC
     SMCWrapper *wrapper = [SMCWrapper wrapper];
-    
+
     int fanCount;
     kern_return_t result = SMCGetTotalFansInSystem(&fanCount);
-    
+
     // Close SMC
     wrapper = nil;
-    
+
     if (result != kIOReturnSuccess) {
         NSDictionary<NSString *, id> *userInfo = @{
             NSLocalizedDescriptionKey: SWF(@"Can't get total fan count from the SMC")
         };
-        
+
         *error = [NSError errorWithDomain:kSMCWrapperKernelErrorDomain code:result userInfo:userInfo];
-        
+
         return -1;
     } else {
         return fanCount;
     }
 }
 
-- (SMCCPUInfo *)getCPUInformation
-{
+- (SMCCPUInfo *)getCPUInformation {
     double temp = SMCGetTemperature(SMC_KEY_CPU_TEMP);
-    
+
     return [[SMCCPUInfo alloc] initWithTemp:temp];
 }
 
-- (NSArray<SMCFanInfo *> *)getFanInformation
-{
+- (NSArray<SMCFanInfo *> *)getFanInformation {
     int count;
     SMCFan *fans;
-    
+
     if (SMCGetFanInfo(&count, &fans) != kIOReturnSuccess)
         return nil;
-    
+
     NSMutableArray<SMCFanInfo *> *fanInfos = [NSMutableArray array];
     for (int i = 0; i < count; i++) {
         SMCFan fan = fans[i];
@@ -206,18 +194,17 @@ NSString *const __nonnull kSMCWrapperKernelErrorDomain = @"kSMCWrapperKernelErro
                                                 safeSpeed:fan.safe
                                               targetSpeed:fan.target
                                                   andMode:fan.mode];
-        
+
         [fanInfos addObject:info];
     }
-    
+
     return fanInfos;
 }
 
-- (SMCPowerInfo *)getPowerInformation
-{
+- (SMCPowerInfo *)getPowerInformation {
     kern_return_t result;
     double val;
-    
+
     result = SMCGetSystemTotalDCIN(&val);
     if (result == kIOReturnSuccess) {
         SMCPowerInfo *info = [[SMCPowerInfo alloc] initWithTotalSystemDCIN:val];

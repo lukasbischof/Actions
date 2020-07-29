@@ -10,8 +10,7 @@
 
 @implementation NSArray (Reverse)
 
-- (NSArray *)invertedArray
-{
+- (NSArray *)invertedArray {
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:[self count]];
     NSEnumerator *enumerator = [self reverseObjectEnumerator];
     for (id element in enumerator) {
@@ -24,17 +23,16 @@
 
 @implementation NSMutableArray (Reverse)
 
-- (void)invert
-{
+- (void)invert {
     if (self.count <= 1)
         return;
-    
+
     NSUInteger i = 0;
     NSUInteger j = self.count - 1;
     while (i < j) {
         [self exchangeObjectAtIndex:i
                   withObjectAtIndex:j];
-        
+
         i++;
         j--;
     }

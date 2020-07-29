@@ -11,7 +11,4 @@
 #import <AppleScriptKit/ASKPluginObject.h>
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
-
-
 @end
-

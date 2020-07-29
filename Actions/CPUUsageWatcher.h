@@ -14,7 +14,6 @@
 #include <mach/mach_host.h>
 
 
-
 /* ********************************************************** */
 /* **************|         CPU CORE         |**************** */
 /* ********************************************************** */
@@ -37,7 +36,6 @@
 @end
 
 
-
 /* ********************************************************** */
 /* ************|       USAGE INFORMATION       |************* */
 /* ********************************************************** */
@@ -46,13 +44,12 @@
  @class CPUUsageInformation
  @brief Holds the usage information of multiple cores
 */
-@interface CPUUsageInformation : NSObject <NSCoding>
+@interface CPUUsageInformation : NSObject<NSCoding>
 
 @property (strong, atomic, readonly, nonnull) NSArray<CPUCore *> *cores;
 @property (assign, nonatomic, readonly) float totalPercentage;
 
 @end
-
 
 
 /* ********************************************************** */
@@ -80,12 +77,11 @@ extern NSString *_Nonnull const kCPUUsageWatcherKernelErrorDomain;
 
 @end
 
-
 /**
  @protocol CPUUsageWatcherDelegate
  @brief Provides an asynchronous interface for communicating with a CPUUsageWatcher
 */
-@protocol CPUUsageWatcherDelegate <NSObject>
+@protocol CPUUsageWatcherDelegate<NSObject>
 
 @optional
 - (void)cpuUsageWatcher:(CPUUsageWatcher *_Nonnull)watcher didReceiveError:(NSError *_Nonnull)error;

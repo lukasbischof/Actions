@@ -33,7 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-
 /* ********************************************************** */
 /* **************|         FAN INFO         |**************** */
 /* ********************************************************** */
@@ -54,7 +53,6 @@ typedef NS_ENUM(NSUInteger, SMCFanMode) {
 @property (nonatomic, readonly) SMCFanMode mode;
 
 @end
-
 
 
 /* ********************************************************** */
@@ -87,7 +85,6 @@ extern NSString *const __nonnull kSMCWrapperKernelErrorDomain;
 */
 - (nullable instancetype)init;
 
-
 /**
  @method getCPUInformation
  @abstract Returns information about the CPU usage
@@ -115,7 +112,7 @@ static inline NSString *NSStringFromSMCFanMode(SMCFanMode mode) {
     switch (mode) {
         case SMCFanModeAuto:
             return @"Auto";
-            
+
         case SMCFanModeForced:
             return @"Forced";
     }

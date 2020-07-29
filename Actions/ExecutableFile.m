@@ -8,13 +8,11 @@
 
 #import "ExecutableFile.h"
 #import <Automator/Automator.h>
-#import <Carbon/Carbon.h>
 #import "Actions-Swift.h"
-#import "NSURL+sandboxing.h"
 
 static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id<NSObject> defaultVal) {
     if ([[dict allKeys] containsObject:key]) {
-        id<NSObject> v = [dict objectForKey:key];
+        id<NSObject> v = dict[key];
         if ([v isKindOfClass:[defaultVal class]])
             return v;
         else
@@ -29,29 +27,27 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
 
 @synthesize url = ___DONT_USE___; // get-only property
 
-
 #pragma mark - Init
-+ (instancetype)executableFileWithURL:(NSURL *)url
-{
+
++ (instancetype)executableFileWithURL:(NSURL *)url {
     return [[ExecutableFile alloc] initWithURL:url];
 }
 
 - (instancetype)init
-    __attribute__((noreturn))
-    __attribute__((unavailable))
-{
+__attribute__((noreturn))
+__attribute__((unavailable)) {
     EAbrtLog(@"Can't init an ExecutableFile without a path");
     DEBUG_ONLY(abort()); // Also quit in debug mode
 }
 
-- (instancetype)initWithURL:(NSURL *)url
-{
+- (instancetype)initWithURL:(NSURL *)url {
     if ((self = [super init])) {
         _url = url;
-        
-        if (!_url)
+
+        if (!_url) {
             return nil;
-        
+        }
+
         NSString *extension = _url.pathExtension;
         if ([extension isEqualToString:@"scpt"]) {
             _type = ExecutableFileTypeAppleScript;
@@ -63,35 +59,34 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
             return nil;
         }
     }
-    
+
     return self;
 }
 
 #pragma mark - Main functionality
-- (NSError *)runAction
-{
+
+- (NSError *)runAction {
     NSError *__block error = nil;
-    [[SettingsKVStore sharedStore] accessScriptsURLContentsWithHandler:^(){
+    [[SettingsKVStore sharedStore] accessScriptsURLContentsWithHandler:^() {
         switch (self->_type) {
             case ExecutableFileTypeAppleScript:
                 error = [self executeAppleScript];
                 break;
-                
+
             case ExecutableFileTypeAutomatorWorkflow:
                 error = [self executeAutomatorWorkflow];
                 break;
-                
+
             case ExecutableFileTypeActionBundle:
                 error = [self executeActionBundle];
                 break;
         }
     }];
-    
+
     return error;
 }
 
-- (NSError *_Nullable)executeAppleScript
-{
+- (NSError *_Nullable)executeAppleScript {
     /*
      // Attempt with sandboxing. Doesn't work yet.
     NSError *error;
@@ -124,40 +119,38 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
     }];
     
     return nil;*/
-    
+
     NSDictionary *errors;
     NSAppleScript *appleScript = [[NSAppleScript alloc] initWithContentsOfURL:_url
                                                                         error:&errors];
     if (errors && errors.count > 0) {
         NSInteger numb = [(NSNumber *)getValForKey(errors, NSAppleScriptErrorNumber, @-1) integerValue];
         NSString *desc = (NSString *)getValForKey(errors, NSAppleScriptErrorMessage, @"");
-        NSError *error = [NSError errorWithDomain:@"NSAppleScriptErrorDomain" code:numb userInfo:@{ NSLocalizedDescriptionKey: desc }];
+        NSError *error = [NSError errorWithDomain:@"NSAppleScriptErrorDomain" code:numb userInfo:@{NSLocalizedDescriptionKey: desc}];
         return error;
     }
-    
+
     errors = nil;
     [appleScript executeAndReturnError:&errors];
-    
+
     if (errors && errors.count > 0) {
         NSInteger numb = [(NSNumber *)getValForKey(errors, NSAppleScriptErrorNumber, @-1) integerValue];
         NSString *desc = (NSString *)getValForKey(errors, NSAppleScriptErrorMessage, @"");
-        NSError *error = [NSError errorWithDomain:@"NSAppleScriptErrorDomain" code:numb userInfo:@{ NSLocalizedDescriptionKey: desc }];
+        NSError *error = [NSError errorWithDomain:@"NSAppleScriptErrorDomain" code:numb userInfo:@{NSLocalizedDescriptionKey: desc}];
         return error;
     }
-    
+
     return nil;
 }
 
-- (NSError *_Nullable)executeAutomatorWorkflow
-{
+- (NSError *_Nullable)executeAutomatorWorkflow {
     NSError *error;
     [AMWorkflow runWorkflowAtURL:_url withInput:nil error:&error];
-    
+
     return error;
 }
 
-- (NSError *_Nullable)executeActionBundle
-{
+- (NSError *_Nullable)executeActionBundle {
     /*NSBundle *bundle = [NSBundle bundleWithPath:_path];
     
     if (bundle) {
@@ -169,7 +162,7 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
     } else {
         
     }*/
-    
+
     CFErrorRef error;
     CFBundleRef bundle = CFBundleCreate(kCFAllocatorDefault, (__bridge CFURLRef)self.url);
     Boolean loaded = CFBundleLoadExecutableAndReturnError(bundle, &error);
@@ -178,28 +171,25 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
     } else {
         WLog(@"didn't load");
     }
-    
+
     CFShow(bundle);
-    
+
     void (*run)(void) = CFBundleGetFunctionPointerForName(bundle, CFSTR("run"));
-    if (run)
+
+    if (run) {
         run();
-    else
+    } else {
         WLog(@"No run method");
-    
+    }
+
     CFRelease(bundle);
-    
+
     return nil;
 }
 
 #pragma mark - Getters/Setters & Misc
-- (NSURL *)url
-{
-    return _url;
-}
 
-- (NSString *)description
-{
+- (NSString *)description {
     return SWF(@"<%@: %p, path: %@>", self.className, self, self.url.absoluteString);
 }
 

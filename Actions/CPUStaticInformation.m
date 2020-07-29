@@ -14,35 +14,40 @@
 
 @implementation CPUStaticInformation
 
-+ (CPUStaticInformation *)sharedInfo
-{
++ (CPUStaticInformation *)sharedInfo {
     static CPUStaticInformation *info;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         info = [[CPUStaticInformation alloc] init];
     });
-    
+
     return info;
 }
 
-- (instancetype)init
-{
+- (float)determineCPUFrequency {
+    int mib[2] = {CTL_HW, HW_CPU_FREQ};
+    unsigned int freq;
+    size_t len = sizeof(freq);
+
+    sysctl(mib, 2, &freq, &len, NULL, 0);
+
+    return (float)(freq / ONE_GHZ);
+}
+
+- (NSString *)determineCPUBrandName {
+    char brand[100];
+    size_t buffer_length = sizeof(brand);
+    sysctlbyname("machdep.cpu.brand_string", &brand, &buffer_length, NULL, 0);
+
+    return [NSString stringWithCString:brand encoding:NSUTF8StringEncoding];
+}
+
+- (instancetype)init {
     if ((self = [super init])) {
-        int mib[2] = { CTL_HW, HW_CPU_FREQ };
-        unsigned int freq;
-        size_t len = sizeof(freq);
-        
-        sysctl(mib, 2, &freq, &len, NULL, 0);
-        
-        _frequency = (float)freq / ONE_GHZ;
-        
-        char brand[100];
-        size_t buffer_length = sizeof(brand);
-        sysctlbyname("machdep.cpu.brand_string", &brand, &buffer_length, NULL, 0);
-        
-        _brand = [NSString stringWithCString:brand encoding:NSUTF8StringEncoding];
+        _frequency = [self determineCPUFrequency];
+        _brand = [self determineCPUBrandName];
     }
-    
+
     return self;
 }
 

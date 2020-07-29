@@ -10,8 +10,7 @@
 
 @implementation NSApplication (relaunch)
 
-- (void)relaunchAfterDelay:(float)seconds
-{
+- (void)relaunchAfterDelay:(float)seconds {
     NSTask *task = [[NSTask alloc] init];
     NSMutableArray *args = [NSMutableArray array];
     [args addObject:@"-c"];
@@ -19,7 +18,7 @@
     [task setLaunchPath:@"/bin/sh"];
     [task setArguments:args];
     [task launch];
-    
+
     [self terminate:nil];
 }
 
