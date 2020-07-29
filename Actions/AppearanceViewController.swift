@@ -39,25 +39,28 @@ class AppearanceViewController: NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+      
+        let onState = NSControl.StateValue.on
+        let offState = NSControl.StateValue.off
         
-        enumeratedKeyboardShortcutsCheckboxButton.state = SettingsKVStore.sharedStore.enumeratedKeyboardShortcutsEnabled ? NSOnState : NSOffState
-        showSystemWatchdogCheckboxButton.state = SettingsKVStore.sharedStore.systemWatchdogEnabled ? NSOnState : NSOffState
-        showCPUTemperatureCheckboxButton.state = SettingsKVStore.sharedStore.showCPUTemperatureEnabled ? NSOnState : NSOffState
-        showCPUInfoCheckboxButton.state = SettingsKVStore.sharedStore.showCPUInfo ? NSOnState : NSOffState
-        showCPUUsageCheckboxButton.state = SettingsKVStore.sharedStore.showCPUUsageEnabled ? NSOnState : NSOffState
-        showFansCheckboxButton.state = SettingsKVStore.sharedStore.showFansEnabled ? NSOnState : NSOffState
-        showTotalDCINCheckboxButton.state = SettingsKVStore.sharedStore.showLineInPowerEnabled ? NSOnState : NSOffState
-        showNetworkInformationCheckboxButton.state = SettingsKVStore.sharedStore.showNetworkInformationEnabled ? NSOnState : NSOffState
+        enumeratedKeyboardShortcutsCheckboxButton.state = SettingsKVStore.sharedStore.enumeratedKeyboardShortcutsEnabled ? onState : offState
+        showSystemWatchdogCheckboxButton.state = SettingsKVStore.sharedStore.systemWatchdogEnabled ? onState : offState
+        showCPUTemperatureCheckboxButton.state = SettingsKVStore.sharedStore.showCPUTemperatureEnabled ? onState : offState
+        showCPUInfoCheckboxButton.state = SettingsKVStore.sharedStore.showCPUInfo ? onState : offState
+        showCPUUsageCheckboxButton.state = SettingsKVStore.sharedStore.showCPUUsageEnabled ? onState : offState
+        showFansCheckboxButton.state = SettingsKVStore.sharedStore.showFansEnabled ? onState : offState
+        showTotalDCINCheckboxButton.state = SettingsKVStore.sharedStore.showLineInPowerEnabled ? onState : offState
+        showNetworkInformationCheckboxButton.state = SettingsKVStore.sharedStore.showNetworkInformationEnabled ? onState : offState
         
         setSystemWatchdogRelatedOutletsEnabled(SettingsKVStore.sharedStore.systemWatchdogEnabled)
     }
     
     @IBAction func enumeratedKeyboardShortcutsCheckboxButtonPressed(_ sender: NSButton) {
-        SettingsKVStore.sharedStore.enumeratedKeyboardShortcutsEnabled = sender.state == NSOnState
+        SettingsKVStore.sharedStore.enumeratedKeyboardShortcutsEnabled = sender.state == NSControl.StateValue.on
     }
     
     @IBAction func showSystemWatchdogCheckboxButtonPressed(_ sender: NSButton) {
-        let enabled = sender.state == NSOnState
+        let enabled = sender.state == NSControl.StateValue.on
         SettingsKVStore.sharedStore.systemWatchdogEnabled = enabled
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: toggleNetworkingTabNotificationKey), object: self) // enable/disable tab
@@ -65,27 +68,27 @@ class AppearanceViewController: NSViewController {
     }
     
     @IBAction func showCPUTemperatureCheckboxButtonPressed(_ sender: AnyObject) {
-        SettingsKVStore.sharedStore.showCPUTemperatureEnabled = sender.state == NSOnState
+        SettingsKVStore.sharedStore.showCPUTemperatureEnabled = sender.state == NSControl.StateValue.on
     }
     
     @IBAction func showCPUInfoCheckboxButtonPressed(_ sender: AnyObject) {
-        SettingsKVStore.sharedStore.showCPUInfo = sender.state == NSOnState
+        SettingsKVStore.sharedStore.showCPUInfo = sender.state == NSControl.StateValue.on
     }
     
     @IBAction func showCPUUsageCheckboxButtonPressed(_ sender: NSButton) {
-        SettingsKVStore.sharedStore.showCPUUsageEnabled = sender.state == NSOnState
+        SettingsKVStore.sharedStore.showCPUUsageEnabled = sender.state == NSControl.StateValue.on
     }
     
     @IBAction func showFansCheckboxButtonPressed(_ sender: NSButton) {
-        SettingsKVStore.sharedStore.showFansEnabled = sender.state == NSOnState
+        SettingsKVStore.sharedStore.showFansEnabled = sender.state == NSControl.StateValue.on
     }
     
     @IBAction func showTotalDCINCheckboxButtonPressed(_ sender: NSButton) {
-        SettingsKVStore.sharedStore.showLineInPowerEnabled = sender.state == NSOnState
+        SettingsKVStore.sharedStore.showLineInPowerEnabled = sender.state == NSControl.StateValue.on
     }
     
     @IBAction func showNetworkInformationCheckboxButtonPressed(_ sender: NSButton) {
-        SettingsKVStore.sharedStore.showNetworkInformationEnabled = sender.state == NSOnState
+        SettingsKVStore.sharedStore.showNetworkInformationEnabled = sender.state == NSControl.StateValue.on
         NotificationCenter.default.post(name: Notification.Name(rawValue: toggleNetworkingTabNotificationKey), object: self) // enable/disable tab
     }
 }

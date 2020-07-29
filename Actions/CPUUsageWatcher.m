@@ -90,6 +90,16 @@
     [aCoder encodeObject:_cores forKey:@"cores"];
 }
 
+- (float)totalPercentage
+{
+    float percentage = 0.f;
+    for (CPUCore *core in self.cores) {
+        percentage += core.percent;
+    }
+    
+    return percentage / (float)self.cores.count;
+}
+
 @end
 
 

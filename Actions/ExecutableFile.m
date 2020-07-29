@@ -72,7 +72,7 @@ static inline id getValForKey(NSDictionary *dict, id<NSCoding, NSObject> key, id
 {
     NSError *__block error = nil;
     [[SettingsKVStore sharedStore] accessScriptsURLContentsWithHandler:^(){
-        switch (_type) {
+        switch (self->_type) {
             case ExecutableFileTypeAppleScript:
                 error = [self executeAppleScript];
                 break;

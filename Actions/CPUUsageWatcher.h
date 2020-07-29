@@ -49,6 +49,7 @@
 @interface CPUUsageInformation : NSObject <NSCoding>
 
 @property (strong, atomic, readonly, nonnull) NSArray<CPUCore *> *cores;
+@property (assign, nonatomic, readonly) float totalPercentage;
 
 @end
 

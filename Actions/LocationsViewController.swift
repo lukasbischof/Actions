@@ -51,7 +51,7 @@ class LocationsViewController: NSViewController {
         openPanel.canDownloadUbiquitousContents = false
         
         openPanel.beginSheetModal(for: self.view.window!) { (result) in
-            if (result == NSFileHandlingPanelOKButton) {
+            if (result.rawValue == NSFileHandlingPanelOKButton) {
                 let url = openPanel.urls[0]
                 
                 if SettingsKVStore.sharedStore.appIsSandboxed {

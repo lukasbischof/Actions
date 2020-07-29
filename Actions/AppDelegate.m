@@ -104,7 +104,7 @@ typedef void(^_Nullable errorViewControllerCompletionHandler)(enum ErrorViewCont
     
     // Setup Statusbar Item
     self.item = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    self.item.title = @"A";
+    self.item.title = @"ACT";
     self.item.highlightMode = YES;
     
     // Misc
@@ -780,7 +780,7 @@ static inline void presentErrorWithAdditionalButton(NSString *__nullable additio
     
     ErrorViewController *errorVC = [ErrorViewController viewControllerWithError:errorObj];
     errorVC.showAdditionalButton = showsAdditionalButton;
-    errorVC.additionalButtonText = additionalButtonText;
+    errorVC.additionalButton.title = additionalButtonText;
     errorVC.completionHandler = completionHandler;
     
     [errorVC presentViewControllerAsModalWindow:errorVC];
