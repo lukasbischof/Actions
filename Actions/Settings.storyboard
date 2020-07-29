@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="tlg-Ry-bbx">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="tlg-Ry-bbx">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12120"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -10,11 +10,14 @@
         <scene sceneID="bwr-rk-LZb">
             <objects>
                 <windowController id="tlg-Ry-bbx" sceneMemberID="viewController">
-                    <window key="window" title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="13T-6P-tgd">
-                        <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES" unifiedTitleAndToolbar="YES"/>
+                    <window key="window" title="Settings" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" animationBehavior="none" frameAutosaveName="" id="13T-6P-tgd">
+                        <windowStyleMask key="styleMask" titled="YES" closable="YES" resizable="YES"/>
                         <windowCollectionBehavior key="collectionBehavior" transient="YES"/>
                         <rect key="contentRect" x="0.0" y="8" width="480" height="270"/>
                         <rect key="screenRect" x="1280" y="0.0" width="1920" height="1057"/>
+                        <connections>
+                            <outlet property="delegate" destination="tlg-Ry-bbx" id="u2k-Ec-W1J"/>
+                        </connections>
                     </window>
                     <connections>
                         <segue destination="EZW-VM-z5b" kind="relationship" relationship="window.shadowedContentViewController" id="t9o-0e-rRb"/>
@@ -34,14 +37,16 @@
                         <tabViewItem image="networking" id="SMB-XD-ODX"/>
                         <tabViewItem image="locations" id="huY-IA-Pd8"/>
                     </tabViewItems>
-                    <viewControllerTransitionOptions key="transitionOptions" crossfade="YES" slideUp="YES" slideDown="YES" allowUserInteraction="YES"/>
                     <tabView key="tabView" type="noTabsNoBorder" id="KUx-Q7-GIE">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <font key="font" metaFont="system"/>
-                        <tabViewItems/>
+                        <connections>
+                            <outlet property="delegate" destination="EZW-VM-z5b" id="m4Y-hW-REn"/>
+                        </connections>
                     </tabView>
                     <connections>
+                        <outlet property="tabView" destination="KUx-Q7-GIE" id="lye-ro-dEI"/>
                         <segue destination="8Pl-2M-sUX" kind="relationship" relationship="tabItems" id="Hyv-Y8-LL7"/>
                         <segue destination="kK9-i3-dTt" kind="relationship" relationship="tabItems" id="6kr-qB-ZT3"/>
                         <segue destination="ceF-MF-jcX" kind="relationship" relationship="tabItems" id="Tin-M6-ytc"/>
@@ -303,7 +308,7 @@
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSFolder" id="X9G-k1-hiu"/>
                                             </imageView>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="R17-jw-N80">
-                                                <rect key="frame" x="164" y="-3" width="85" height="32"/>
+                                                <rect key="frame" x="163" y="-3" width="85" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="73" id="QN3-nu-H1J"/>
                                                 </constraints>
@@ -316,7 +321,7 @@
                                                 </connections>
                                             </button>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="daS-ke-vxy">
-                                                <rect key="frame" x="32" y="6" width="130" height="17"/>
+                                                <rect key="frame" x="32" y="6" width="129" height="17"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" title="Documents ▸ Scripts" id="Yk4-Xc-KVP">
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -513,15 +518,15 @@
         <scene sceneID="SfF-t1-k3S">
             <objects>
                 <viewController title="Networking Info" id="ceF-MF-jcX" customClass="NetworkInformationViewController" customModule="Actions" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="82G-7V-HxU">
-                        <rect key="frame" x="0.0" y="0.0" width="500" height="300"/>
+                    <view key="view" misplaced="YES" id="82G-7V-HxU">
+                        <rect key="frame" x="0.0" y="0.0" width="500" height="277"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="sA8-It-2Mz">
-                                <rect key="frame" x="0.0" y="0.0" width="200" height="280"/>
+                                <rect key="frame" x="0.0" y="0.0" width="200" height="234"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IKq-2W-QTn">
-                                        <rect key="frame" x="6" y="252" width="188" height="20"/>
+                                        <rect key="frame" x="6" y="206" width="188" height="20"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="20" id="WKL-6q-kcP"/>
                                         </constraints>
@@ -540,21 +545,20 @@
                                 </constraints>
                             </customView>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="23" horizontalPageScroll="10" verticalLineScroll="23" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="POb-Fx-vhf">
-                                <rect key="frame" x="208" y="8" width="284" height="272"/>
+                                <rect key="frame" x="208" y="8" width="284" height="226"/>
                                 <clipView key="contentView" drawsBackground="NO" id="g1Y-Uj-VGt">
-                                    <rect key="frame" x="1" y="0.0" width="282" height="271"/>
+                                    <rect key="frame" x="1" y="0.0" width="282" height="225"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="20" headerView="Qgt-Uy-l6w" viewBased="YES" id="URx-xL-sDV">
-                                            <rect key="frame" x="0.0" y="0.0" width="282" height="248"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="282" height="202"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="3"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn width="30" minWidth="30" maxWidth="1000" id="KYD-j3-3XR">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -586,7 +590,6 @@
                                                 </tableColumn>
                                                 <tableColumn width="236" minWidth="40" maxWidth="1000" id="p0e-7A-e5B">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Networking Items">
-                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -626,11 +629,11 @@
                                     </subviews>
                                     <nil key="backgroundColor"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="ig2-Fr-XBw">
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="ig2-Fr-XBw">
                                     <rect key="frame" x="1" y="255" width="282" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="DuG-Ej-D6S">
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="DuG-Ej-D6S">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
@@ -662,7 +665,7 @@
     <resources>
         <image name="NSFolder" width="32" height="32"/>
         <image name="eye" width="42" height="42"/>
-        <image name="fan2" width="21" height="21"/>
+        <image name="fan2" width="42" height="42"/>
         <image name="locations" width="85" height="85"/>
         <image name="networking" width="85" height="85"/>
     </resources>
