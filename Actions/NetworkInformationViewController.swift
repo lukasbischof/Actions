@@ -30,7 +30,7 @@ class NetworkInformationViewController: NSViewController, NSTableViewDelegate, N
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let tableColumn = tableColumn {
-            guard let columnIndex = tableView.tableColumns.index(of: tableColumn) else {
+            guard let columnIndex = tableView.tableColumns.firstIndex(of: tableColumn) else {
                 return nil
             }
             
@@ -77,7 +77,7 @@ class NetworkInformationViewController: NSViewController, NSTableViewDelegate, N
     }
     
     func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation {
-        guard let types = info.draggingPasteboard().types else {
+        guard let types = info.draggingPasteboard.types else {
             return NSDragOperation()
         }
         
@@ -89,9 +89,9 @@ class NetworkInformationViewController: NSViewController, NSTableViewDelegate, N
     }
     
     func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool {
-        if let types = info.draggingPasteboard().types {
+        if let types = info.draggingPasteboard.types {
             if types.contains(NSPasteboard.PasteboardType(rawValue: "drag")) && dropOperation == .above {
-                if let indexData = info.draggingPasteboard().data(forType: NSPasteboard.PasteboardType(rawValue: "drag")) {
+                if let indexData = info.draggingPasteboard.data(forType: NSPasteboard.PasteboardType(rawValue: "drag")) {
                     if let indexes = NSKeyedUnarchiver.unarchiveObject(with: indexData) as? IndexSet {
                         for index in indexes {
                             do {

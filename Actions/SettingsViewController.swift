@@ -43,9 +43,9 @@ class SettingsViewController: NSTabViewController {
     
     private func toggleNetworkingTab(_ enabled: Bool) -> Void {
         if enabled {
-          tabView.tabViewItem(at: 2).image = NSImage(named: NSImage.Name(rawValue: "networking"))
+          tabView.tabViewItem(at: 2).image = NSImage(named: "networking")
         } else {
-          tabView.tabViewItem(at: 2).image = NSImage(named: NSImage.Name(rawValue: "networking-disabled"))
+          tabView.tabViewItem(at: 2).image = NSImage(named: "networking-disabled")
         }
     }
     

@@ -228,8 +228,8 @@ class NetworkingSettings: NSObject, NSCoding {
     }
     
     func moveOption(_ option: NetworkingOption, afterOption targetOption: NetworkingOption) throws -> Void {
-        if let fromIndex = settings.index(of: option) {
-            if let targetIndex = settings.index(of: targetOption) {
+        if let fromIndex = settings.firstIndex(of: option) {
+            if let targetIndex = settings.firstIndex(of: targetOption) {
                 try moveOptionAtIndex(UInt(fromIndex), toIndex: UInt(targetIndex))
             } else {
                 throw NetworkingSettingsError.optionDoesNotExist(option: targetOption)
@@ -465,7 +465,7 @@ class SettingsKVStore: NSObject {
                     try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
                     
                     // Ein eigenes Ordner-Icon erstellen
-                    let icon = NSImage(named: NSImage.Name(rawValue: "scriptsDir"))
+                    let icon = NSImage(named: "scriptsDir")
                     NSWorkspace.shared.setIcon(icon, forFile: finalPath, options: NSWorkspace.IconCreationOptions(rawValue: 0))
                     
                     self.scriptsDirectory = url // Über den Setter dieser Property, damit auch die User-Defaults gesetzt werden
@@ -494,7 +494,7 @@ class SettingsKVStore: NSObject {
                     print("EXCEPTION \(e)") /// @todo Handle exception
                 }
             } else {
-                setVal(Constants.kScriptsDirectoryKey as String, value: NSKeyedArchiver.archivedData(withRootObject: self._scriptsDir) as AnyObject)
+                setVal(Constants.kScriptsDirectoryKey as String, value: NSKeyedArchiver.archivedData(withRootObject: self._scriptsDir as Any) as AnyObject)
             }
             
             sync()
@@ -509,6 +509,8 @@ class SettingsKVStore: NSObject {
     }
     
     override init() {
+        self.networkingSettings = NetworkingSettings.loadSettings()
+        
         super.init()
         
         self.enumeratedKeyboardShortcutsEnabled = getBool(Constants.kEnumeratedKeyboardShortcutsEnabledKey as String, defaultValue: false)
@@ -520,7 +522,6 @@ class SettingsKVStore: NSObject {
         self.showLineInPowerEnabled = getBool(Constants.kShowLineInPowerEnabledKey as String, defaultValue: true)
         self.showNetworkInformationEnabled = getBool(Constants.kShowNetworkInformationEnabledKey as String, defaultValue: true)
         
-        self.networkingSettings = NetworkingSettings.loadSettings()
         self.networkingSettings?.didChangeNetworkSettingsListner = { () -> Void in
             print("Did change networking settings")
             

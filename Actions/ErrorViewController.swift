@@ -42,7 +42,7 @@ class ErrorViewController: NSViewController {
     @IBOutlet weak var additionalButton: NSButton!
     
     @objc class func viewControllerWithError(_ error: NSError) -> ErrorViewController? {
-        let viewController = ErrorViewController(nibName: NSNib.Name.init("ErrorViewController"), bundle: nil)
+        let viewController = ErrorViewController(nibName: "ErrorViewController", bundle: nil)
         
         viewController.error = error
         
@@ -75,10 +75,10 @@ class ErrorViewController: NSViewController {
         
         switch type {
             case .error:
-                imageView.image = NSImage(named: NSImage.Name.caution)
+                imageView.image = NSImage(named: NSImage.cautionName)
         
             case .info:
-                imageView.image = NSImage(named: NSImage.Name.info)
+                imageView.image = NSImage(named: NSImage.infoName)
         }
         
         additionalButton.title = additionalButtonText as String
